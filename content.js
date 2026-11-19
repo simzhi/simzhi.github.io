@@ -91,7 +91,7 @@ window.SITE = {
     "footer": {
       en: "© 2026 Zhihao Yang · Designed with care in Munich",
       de: "© 2026 Zhihao Yang · Mit Sorgfalt gestaltet in München",
-      zh: "© 2026 Zhihao Yang · 用心设计于慕尼黑"
+      zh: "© 2026 杨志豪 · 用心设计于慕尼黑"
     }
   },
 
