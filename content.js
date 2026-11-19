@@ -91,7 +91,7 @@ window.SITE = {
     "contact.copy":      { en: "Click to copy",  de: "Klicken zum Kopieren", zh: "点击复制" },
     "contact.open":      { en: "Open profile ›", de: "Profil öffnen ›",      zh: "打开主页 ›" },
     "contact.location":  { en: "Location",       de: "Standort",             zh: "所在地" },
-    "contact.place":     { en: "Poing, near Munich, Germany", de: "Poing bei München", zh: "德国 · 慕尼黑附近 · Poing" },
+    "contact.place":     { en: "Munich, Germany", de: "München, Deutschland", zh: "德国 · 慕尼黑" },
     "contact.country":   { en: "Germany",        de: "Deutschland",          zh: "德国" },
     "contact.map":       { en: "Open in Maps ›", de: "In Karte öffnen ›",    zh: "在地图中打开 ›" },
     "toast.copied":      { en: "✓ Email copied", de: "✓ E-Mail kopiert",     zh: "✓ 邮箱已复制" },
