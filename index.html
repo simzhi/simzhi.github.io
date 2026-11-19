@@ -452,7 +452,7 @@
   <!-- 所有文字都在 content.js 里。
        每次修改 content.js 后，把下面 v= 后面的数字加 1（例如 v=3），访客的浏览器就会立刻加载新文字，
        否则浏览器可能还会用旧文字最多 10 分钟。 -->
-  <script src="content.js?v=2"></script>
+  <script src="content.js?v=3"></script>
 </head>
 <body>
   <div class="ambient" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="b4"></i></div>
@@ -559,12 +559,13 @@
             <span class="v">in/zh-yang</span>
             <span class="h" data-t="contact.open"></span>
           </a>
-          <div class="ccard reveal d2" style="cursor:default">
+          <!-- 点击打开地图（只显示城市 Poing，不显示具体地址） -->
+          <a class="ccard reveal d2" href="https://www.google.com/maps/search/?api=1&amp;query=Poing%2C%20Germany" target="_blank" rel="noopener">
             <span class="ic" style="background:linear-gradient(135deg,#30d158,#0a84ff)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>
             <span class="k" data-t="contact.location"></span>
             <span class="v" data-t="contact.place"></span>
-            <span class="h" style="color:var(--muted)" data-t="contact.country"></span>
-          </div>
+            <span class="h" data-t="contact.map"></span>
+          </a>
         </div>
       </div>
     </section>
