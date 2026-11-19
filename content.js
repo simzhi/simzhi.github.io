@@ -14,7 +14,14 @@ window.SITE = {
 
   /* ---------------- 零散的短文字 ---------------- */
   ui: {
-    "nav.about":    { en: "About",   de: "Über mich", zh: "关于我" },
+    /* 名字：<span class="grad">…</span> 里的部分显示为蓝紫渐变色 */
+    "name.short":   { en: "Zhihao Yang", de: "Zhihao Yang", zh: "杨志豪" },
+    "hero.name":    { en: "Zhihao <span class=\"grad\">Yang.</span>",
+                      de: "Zhihao <span class=\"grad\">Yang.</span>",
+                      zh: "杨<span class=\"grad\">志豪</span>" },
+    "page.title":   { en: "Zhihao Yang", de: "Zhihao Yang", zh: "杨志豪 · Zhihao Yang" },
+
+    "nav.about":   { en: "About",   de: "Über mich", zh: "关于我" },
     "nav.values":   { en: "Values",  de: "Werte",     zh: "理念" },
     "nav.journey":  { en: "Journey", de: "Werdegang", zh: "经历" },
     "nav.contact":  { en: "Contact", de: "Kontakt",   zh: "联系" },

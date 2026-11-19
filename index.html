@@ -436,7 +436,7 @@
 
   <nav class="bar" id="nav">
     <div class="inner">
-      <a class="brand" href="#top">Zhihao Yang</a>
+      <a class="brand" href="#top" data-t="name.short">Zhihao Yang</a>
       <div class="links">
         <a href="#about" data-t="nav.about"></a>
         <a href="#values" data-t="nav.values"></a>
@@ -456,7 +456,7 @@
       <div class="wrap">
         <div>
           <p class="eyebrow reveal" data-t="hero.hello"></p>
-          <h1 class="reveal d1">Zhihao <span class="grad">Yang.</span></h1>
+          <h1 class="reveal d1" data-t="hero.name">Zhihao <span class="grad">Yang.</span></h1>
           <p class="rotator reveal d2"><span data-t="hero.rotPre"></span><span class="word" id="word"></span><span data-t="hero.rotPost"></span></p>
           <p class="lead reveal d2" data-t="hero.lead"></p>
           <div class="ctas reveal d3">
@@ -616,6 +616,8 @@
         var v = S.ui[el.dataset.t];
         if (v) el.innerHTML = esc(t(v));
       });
+      if (S.ui['page.title']) document.title = t(S.ui['page.title']).replace(/<[^>]*>/g, '');
+      $$('.portrait img').forEach(function (img) { img.alt = t(S.ui['name.short']); });
 
       $('#stats').innerHTML = S.stats.map(function (s, i) {
         return '<div class="stat reveal' + (i ? ' d' + Math.min(i, 3) : '') + '"><div class="n" data-count="' + s.n + '">0</div><div class="l">' + esc(t(s.label)) + '</div></div>';
