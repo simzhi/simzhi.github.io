@@ -1,0 +1,230 @@
+/* ==========================================================================
+   网站全部文字都在这个文件里 —— 修改文字只需要改这里，不用动 index.html
+   All text on the website lives in this file.
+
+   规则很简单：
+   • 每段文字都写成 { en: "英文", de: "德文", zh: "中文" }
+   • 用英文双引号 "..." 包住文字；文字里如果要用双引号，写成 \"
+   • 每一项后面记得保留逗号 ,
+   • 可以用 <strong>加粗</strong> 和 <br>（换行）
+   • 某种语言留空时，会自动显示英文
+   ========================================================================== */
+
+window.SITE = {
+
+  /* ---------------- 零散的短文字 ---------------- */
+  ui: {
+    "nav.about":    { en: "About",   de: "Über mich", zh: "关于我" },
+    "nav.values":   { en: "Values",  de: "Werte",     zh: "理念" },
+    "nav.journey":  { en: "Journey", de: "Werdegang", zh: "经历" },
+    "nav.contact":  { en: "Contact", de: "Kontakt",   zh: "联系" },
+
+    /* 首屏 */
+    "hero.hello":   { en: "Hello, I'm", de: "Hallo, ich bin", zh: "你好，我是" },
+    // 轮换句子 = rotPre + 轮换的词 + rotPost
+    "hero.rotPre":  { en: "I turn ",                         de: "Ich mache aus ",                 zh: "我把" },
+    "hero.rotPost": { en: "<br>into working solutions.",     de: "<br>funktionierende Lösungen.",  zh: "<br>变成可落地的解决方案。" },
+    "hero.lead": {
+      en: "Engineer at the intersection of customers, software and technical systems. Based near Munich.",
+      de: "Ingenieur an der Schnittstelle von Kunden, Software und technischen Systemen. Zuhause bei München.",
+      zh: "工作在客户、软件与技术系统交汇处的工程师，现居慕尼黑附近。"
+    },
+    "hero.cta1":   { en: "Get in touch",     de: "Kontakt aufnehmen", zh: "联系我" },
+    "hero.cta2":   { en: "See my journey ›", de: "Mein Werdegang ›",  zh: "查看经历 ›" },
+    "hero.badge":  { en: "Senior Implementation Analyst", de: "Senior Implementation Analyst", zh: "高级实施分析师" },
+    "hero.scroll": { en: "Scroll", de: "Scrollen", zh: "向下滚动" },
+
+    /* 关于我 */
+    "about.kicker": { en: "About me", de: "Über mich", zh: "关于我" },
+    "about.title":  {
+      en: "From headlights to mission-critical software.",
+      de: "Vom Scheinwerfer zur einsatzkritischen Software.",
+      zh: "从车灯，到关键任务软件。"
+    },
+    "about.p1": {
+      en: "Today I'm a <strong>Senior Implementation Analyst at HxGN Safety & Infrastructure</strong>, implementing mission-critical software for public-safety customers and looking after two of our own software products.",
+      de: "Heute bin ich <strong>Senior Implementation Analyst bei HxGN Safety & Infrastructure</strong>. Ich implementiere einsatzkritische Software für Kunden der öffentlichen Sicherheit und betreue zwei unternehmenseigene Softwareprodukte.",
+      zh: "目前我是 <strong>HxGN Safety & Infrastructure 的高级实施分析师</strong>，为公共安全领域的客户实施和配置关键任务软件，并负责公司两款自有软件产品的运营支持。"
+    },
+    "about.p2": {
+      en: "Before that I spent my early career in <strong>automotive lighting</strong> — researching how light lets automated cars talk to people at AUDI, and leading exterior lighting development from prototype to pre-series at Magna Steyr.",
+      de: "Davor war ich in der <strong>Fahrzeugbeleuchtung</strong> tätig – bei AUDI habe ich erforscht, wie Licht automatisierten Fahrzeugen die Kommunikation mit Menschen ermöglicht, bei Magna Steyr habe ich die Entwicklung von Außenbeleuchtung vom Prototyp bis zur Vorserie geleitet.",
+      zh: "此前我从事<strong>汽车照明</strong>工作：在奥迪研究灯光如何让自动驾驶汽车与人沟通；在麦格纳斯太尔，作为主管工程师负责外部照明系统从样件到预批量的开发。"
+    },
+    "about.p3": {
+      en: "What connects it all: asking the right questions until a fuzzy idea becomes something concrete — then making sure it really works.",
+      de: "Was alles verbindet: die richtigen Fragen stellen, bis aus einer vagen Idee etwas Konkretes wird – und dann sicherstellen, dass es wirklich funktioniert.",
+      zh: "贯穿始终的是：不断提出对的问题，直到模糊的想法变得具体——然后确保它真正可行。"
+    },
+
+    /* 理念 */
+    "values.kicker": { en: "What I care about", de: "Was mir wichtig ist", zh: "我在意的事" },
+    "values.title":  {
+      en: "Good work is clear, reliable and shared.",
+      de: "Gute Arbeit ist klar, verlässlich und gemeinsam.",
+      zh: "好的工作，清晰、可靠、彼此连接。"
+    },
+
+    /* 经历 */
+    "journey.kicker": { en: "Journey", de: "Werdegang", zh: "经历" },
+    "journey.title":  { en: "Where I've been.", de: "Meine Stationen.", zh: "一路走来。" },
+    "filter.all":     { en: "All",       de: "Alle",       zh: "全部" },
+    "filter.work":    { en: "Work",      de: "Beruf",      zh: "工作" },
+    "filter.edu":     { en: "Education", de: "Ausbildung", zh: "教育" },
+
+    /* 联系 */
+    "contact.kicker": { en: "Contact",     de: "Kontakt",     zh: "联系方式" },
+    "contact.title":  { en: "Let's talk.", de: "Sprechen wir.", zh: "聊一聊吧。" },
+    "contact.lead": {
+      en: "Always happy to hear about projects, roles — or just to connect.",
+      de: "Ich freue mich über Nachrichten zu Projekten, Stellen – oder einfach zum Vernetzen.",
+      zh: "欢迎和我聊项目、职位机会，或者只是认识一下。"
+    },
+    "contact.email":     { en: "Email",          de: "E-Mail",               zh: "邮箱" },
+    "contact.copy":      { en: "Click to copy",  de: "Klicken zum Kopieren", zh: "点击复制" },
+    "contact.open":      { en: "Open profile ›", de: "Profil öffnen ›",      zh: "打开主页 ›" },
+    "contact.location":  { en: "Location",       de: "Standort",             zh: "所在地" },
+    "contact.place":     { en: "Poing, near Munich", de: "Poing bei München", zh: "慕尼黑附近 · Poing" },
+    "contact.country":   { en: "Germany",        de: "Deutschland",          zh: "德国" },
+    "toast.copied":      { en: "✓ Email copied", de: "✓ E-Mail kopiert",     zh: "✓ 邮箱已复制" },
+
+    "footer": {
+      en: "© 2026 Zhihao Yang · Designed with care in Munich",
+      de: "© 2026 Zhihao Yang · Mit Sorgfalt gestaltet in München",
+      zh: "© 2026 Zhihao Yang · 用心设计于慕尼黑"
+    }
+  },
+
+  /* ---------------- 首屏轮换的词（按顺序轮播） ---------------- */
+  rotator: {
+    en: ["unclear requirements", "customer needs", "complex systems", "new ideas"],
+    de: ["unklaren Anforderungen", "Kundenbedürfnissen", "komplexen Systemen", "neuen Ideen"],
+    zh: ["模糊的需求", "客户的诉求", "复杂的系统", "新的想法"]
+  },
+
+  /* ---------------- 数字卡片：n 是数字 ---------------- */
+  stats: [
+    { n: 4, label: { en: "Companies, from TÜV SÜD to HxGN", de: "Unternehmen, von TÜV SÜD bis HxGN", zh: "家公司，从 TÜV SÜD 到 HxGN" } },
+    { n: 2, label: { en: "Degrees from TU Munich",         de: "Abschlüsse an der TU München",     zh: "个慕尼黑工业大学学位" } },
+    { n: 2, label: { en: "Software products in my care",   de: "Softwareprodukte in meiner Verantwortung", zh: "款由我负责的软件产品" } },
+    { n: 3, label: { en: "Languages — English, German, Chinese", de: "Sprachen – Englisch, Deutsch, Chinesisch", zh: "种语言：英语、德语、中文" } }
+  ],
+
+  /* ---------------- 理念卡片 ----------------
+     size: 卡片宽度 w2 / w3 / w4（每一行加起来 = 6）
+     feature: true 表示彩色高亮卡片 */
+  values: [
+    { icon: "💬", size: "w4", feature: true,
+      title: { en: "Clarity first", de: "Klarheit zuerst", zh: "清晰优先" },
+      text:  { en: "I ask targeted questions early, so customers and developers build toward the same picture — not two different ones.",
+               de: "Ich stelle früh gezielte Fragen, damit Kunden und Entwickler auf dasselbe Bild hinarbeiten – nicht auf zwei verschiedene.",
+               zh: "尽早提出有针对性的问题，让客户和开发团队朝着同一个目标努力，而不是各想各的。" } },
+    { icon: "🛡️", size: "w2",
+      title: { en: "Reliability", de: "Verlässlichkeit", zh: "可靠" },
+      text:  { en: "When software keeps people safe, every fix gets verified.",
+               de: "Wenn Software Menschen schützt, wird jede Korrektur überprüft.",
+               zh: "当软件关乎人们的安全，每一次修复都要验证。" } },
+    { icon: "🤝", size: "w3",
+      title: { en: "Bridging people", de: "Brücken bauen", zh: "连接人与团队" },
+      text:  { en: "Connecting customers, engineers, suppliers and teams across disciplines and countries.",
+               de: "Kunden, Entwickler, Lieferanten und Teams über Fachbereiche und Länder hinweg verbinden.",
+               zh: "连接客户、工程师、供应商，以及跨专业、跨国家的团队。" } },
+    { icon: "💡", size: "w3",
+      title: { en: "Curiosity", de: "Neugier", zh: "好奇心" },
+      text:  { en: "From mechanical engineering to robotics, deep learning and software — I like learning how things work.",
+               de: "Vom Maschinenbau über Robotik und Deep Learning bis zur Software – ich will verstehen, wie Dinge funktionieren.",
+               zh: "从机械工程到机器人、深度学习再到软件——我喜欢弄明白事物是如何运作的。" } }
+  ],
+
+  /* ---------------- 经历（最新的写在最上面） ----------------
+     type: "work" 工作 或 "edu" 教育
+     points: 点开后显示的要点，每种语言一个列表 */
+  journey: [
+    { type: "work",
+      when:  { en: "2025 – today", de: "2025 – heute", zh: "2025 – 至今" },
+      title: { en: "Senior Implementation Analyst", de: "Senior Implementation Analyst", zh: "高级实施分析师" },
+      place: { en: "HxGN Safety & Infrastructure · Munich area", de: "HxGN Safety & Infrastructure · Großraum München", zh: "HxGN Safety & Infrastructure · 慕尼黑地区" },
+      points: {
+        en: ["Implement and configure mission-critical software for public-safety customers.",
+             "Turn customer workflows into clear requirements and system configurations.",
+             "Coordinate testing, bug fixing and rollout with customers and international teams.",
+             "Responsible for the operational support of two in-house software products."],
+        de: ["Implementierung und Konfiguration einsatzkritischer Software für Kunden der öffentlichen Sicherheit.",
+             "Kundenabläufe in klare Anforderungen und Systemkonfigurationen überführen.",
+             "Koordination von Tests, Fehlerbehebung und Rollout mit Kunden und internationalen Teams.",
+             "Verantwortlich für die operative Betreuung von zwei unternehmenseigenen Softwareprodukten."],
+        zh: ["为公共安全领域的客户实施和配置关键任务软件。",
+             "将客户的工作流程转化为清晰的需求和系统配置。",
+             "与客户及国际团队协调测试、问题修复和上线。",
+             "负责公司两款自有软件产品的运营支持。"]
+      } },
+    { type: "work",
+      when:  { en: "2023 – 2025" },
+      title: { en: "Project / Lead Engineer, Automotive Lighting", de: "Project / Lead Engineer – Automotive Lighting", zh: "项目工程师 / 主管工程师 · 汽车照明" },
+      place: { en: "Magna Steyr Engineering · Munich", de: "Magna Steyr Engineering · München", zh: "麦格纳斯太尔工程 · 慕尼黑" },
+      points: {
+        en: ["Led exterior lighting development as Lead Engineer and SE team lead, from prototype to pre-series.",
+             "Aligned requirements with design and engineering; coordinated international suppliers.",
+             "Worked with customers, product management, purchasing and sales; contributed to PFMEA."],
+        de: ["Entwicklung von Außenbeleuchtungssystemen als Lead Engineer und SE-Teamleiter vom Prototyp bis zur Vorserie koordiniert.",
+             "Anforderungen mit Design und Engineering abgestimmt, internationale Lieferanten koordiniert.",
+             "Zusammenarbeit mit Kunden, Produktmanagement, Einkauf und Vertrieb; Mitwirkung an der PFMEA."],
+        zh: ["作为主管工程师和 SE 团队负责人，协调外部照明系统从样件到预批量的开发。",
+             "与设计和工程部门对齐需求，协调国际供应商。",
+             "与客户、产品管理、采购和销售协作；参与 PFMEA 风险评估。"]
+      } },
+    { type: "work",
+      when:  { en: "2022 – 2023" },
+      title: { en: "Master's Thesis & Internship, Lighting Innovation", de: "Masterarbeit & Praktikum – Beleuchtungsinnovation", zh: "硕士论文与实习 · 照明创新" },
+      place: { en: "AUDI AG · Ingolstadt", zh: "奥迪 AUDI AG · 因戈尔施塔特" },
+      points: {
+        en: ["Developed concepts and prototypes for light-based human–machine communication in automated driving, using deep learning.",
+             "Helped build a test vehicle; programmed control logic with LOGO! and analysed bus signals.",
+             "Supported testing of digital matrix LED headlights."],
+        de: ["Konzepte und Prototypen für Lichtfunktionen zur Mensch-Maschine-Kommunikation beim automatisierten Fahren entwickelt – mit Deep Learning.",
+             "Mitarbeit am Versuchsfahrzeug; Steuerungslogik mit LOGO! programmiert und Bussignale analysiert.",
+             "Tests von Digital-Matrix-LED-Scheinwerfern unterstützt."],
+        zh: ["开发用于自动驾驶人机交互的灯光功能概念与原型，并运用深度学习。",
+             "参与试验车开发；使用 LOGO! 编写控制逻辑并分析总线信号。",
+             "支持数字矩阵 LED 大灯的测试。"]
+      } },
+    { type: "work",
+      when:  { en: "2021 – 2022" },
+      title: { en: "Working Student, Automotive Technical Services", de: "Werkstudent – Technische Dienstleistungen Automotive", zh: "工读生 · 汽车技术服务" },
+      place: { en: "TÜV SÜD · Munich", de: "TÜV SÜD · München", zh: "TÜV SÜD · 慕尼黑" },
+      points: {
+        en: ["Built and maintained an Access database for tracking type approvals.",
+             "Structured and documented standards such as ISO 21448 and ISO 21434."],
+        de: ["Access-Datenbank zur Überwachung von Typgenehmigungen entwickelt und gepflegt.",
+             "Standards wie ISO 21448 und ISO 21434 strukturiert und dokumentiert."],
+        zh: ["开发并维护用于跟踪型式认证的 Access 数据库。",
+             "整理并记录 ISO 21448、ISO 21434 等标准。"]
+      } },
+    { type: "edu",
+      when:  { en: "2021 – 2023" },
+      title: { en: "M.Sc. Robotics, Cognition, Intelligence", zh: "机器人、认知与智能 · 理学硕士" },
+      place: { en: "Technical University of Munich", de: "Technische Universität München", zh: "慕尼黑工业大学" },
+      points: {
+        en: ["Master's thesis at AUDI on lighting for human–machine communication."],
+        de: ["Masterarbeit bei AUDI zu Licht für die Mensch-Maschine-Kommunikation."],
+        zh: ["在奥迪完成硕士论文，研究面向人机交互的灯光。"]
+      } },
+    { type: "edu",
+      when:  { en: "2017 – 2021" },
+      title: { en: "B.Sc. Mechanical Engineering", de: "B.Sc. Maschinenwesen", zh: "机械工程 · 理学学士" },
+      place: { en: "Technical University of Munich", de: "Technische Universität München", zh: "慕尼黑工业大学" },
+      points: {
+        en: ["Foundation in engineering design, mechanics and product development."],
+        de: ["Grundlagen in Konstruktion, Mechanik und Produktentwicklung."],
+        zh: ["打下工程设计、力学与产品开发的基础。"]
+      } }
+  ],
+
+  /* ---------------- 技能标签（不需要翻译的直接写文字） ---------------- */
+  skills: [
+    { en: "Requirements analysis",   de: "Anforderungsanalyse",       zh: "需求分析" },
+    { en: "Implementation & rollout", de: "Implementierung & Rollout", zh: "实施与上线" },
+    { en: "Testing & debugging",      de: "Tests & Fehleranalyse",     zh: "测试与问题排查" },
+    "Jira", "DevOps", "SQL", "Python", "VBA & Access", "CATIA V5/V6", "Autodesk Inventor"
+  ]
+};
