@@ -35,6 +35,20 @@
   }
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
+  /* ---------- 手机导航菜单 ---------- */
+  var menuBtn = $('#menuBtn');
+  if (menuBtn && nav) {
+    var setMenu = function (open) {
+      nav.classList.toggle('open', open);
+      menuBtn.setAttribute('aria-expanded', open);
+    };
+    menuBtn.addEventListener('click', function (e) { e.stopPropagation(); setMenu(!nav.classList.contains('open')); });
+    $$('.links a', nav).forEach(function (a) { a.addEventListener('click', function () { setMenu(false); }); });
+    document.addEventListener('click', function (e) { if (!nav.contains(e.target)) setMenu(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && nav.classList.contains('open')) { setMenu(false); menuBtn.focus(); } });
+    matchMedia('(min-width: 561px)').addEventListener('change', function (m) { if (m.matches) setMenu(false); });
+  }
+
   /* ---------- 滚动渐显 + 数字动画（最终数字已写在 HTML 里） ---------- */
   function countUp(el) {
     var end = +el.dataset.count, start = null;

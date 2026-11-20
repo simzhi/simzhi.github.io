@@ -114,6 +114,7 @@ window.SITE = {
 
     /* 项目案例（内容在 cases.js） */
     "nav.work":         { en: "Work",         de: "Projekte",            zh: "项目" },
+    "nav.menu":         { en: "Menu",         de: "Menü",                zh: "菜单" },
     "skip":             { en: "Skip to content", de: "Zum Inhalt springen", zh: "跳到正文" },
     "work.kicker":      { en: "Selected work", de: "Ausgewählte Projekte", zh: "精选项目" },
     "work.title":       { en: "A closer look at three projects.", de: "Drei Projekte im Detail.", zh: "深入看看三个项目。" },
