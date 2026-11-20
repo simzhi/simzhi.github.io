@@ -18,12 +18,18 @@
       ? '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'
       : '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>';
   }
-  drawIcon();
+  // 让 Safari / Chrome 的地址栏和状态栏颜色跟着网站自己的深浅色走（不只跟系统设置）
+  function syncThemeColor() {
+    var bg = getComputedStyle(root).getPropertyValue('--bg').trim();
+    $$('meta[name="theme-color"]').forEach(function (m) { m.setAttribute('content', bg); m.setAttribute('media', 'all'); });
+    root.style.colorScheme = root.getAttribute('data-theme');
+  }
+  drawIcon(); syncThemeColor();
   if (themeBtn) themeBtn.addEventListener('click', function () {
     var th = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     root.setAttribute('data-theme', th);
     store('theme', th);
-    drawIcon();
+    drawIcon(); syncThemeColor();
   });
 
   /* ---------- 滚动进度条 + 导航收窄 ---------- */

@@ -72,7 +72,10 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .wrap { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
 
 /* ---------- 背景：缓慢流动的光斑（玻璃需要有东西可以“透”） ---------- */
-.ambient { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+/* 背景光斑层上下各多出 --edge，盖住 iPhone Safari 状态栏、底部工具栏和回弹区域，不留纯色边 */
+.ambient { --edge: 160px; position: fixed; top: calc(-1 * var(--edge)); bottom: calc(-1 * var(--edge)); left: 0; right: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.ambient .b1, .ambient .b2 { margin-top: var(--edge); }
+.ambient .b3, .ambient .b4 { margin-bottom: var(--edge); }
 .ambient i { position: absolute; border-radius: 50%; opacity: var(--blob-o); transition: opacity .6s; will-change: transform; }
 .ambient .b1 { width: 70vmax; height: 70vmax; left: -22vmax; top: -24vmax; background: radial-gradient(circle, var(--blob-1) 0%, transparent 68%); animation: drift1 26s ease-in-out infinite alternate; }
 .ambient .b2 { width: 60vmax; height: 60vmax; right: -20vmax; top: 4vmax; background: radial-gradient(circle, var(--blob-2) 0%, transparent 68%); animation: drift2 32s ease-in-out infinite alternate; }
@@ -113,13 +116,13 @@ body.switching #main, body.switching .links a { opacity: 0; filter: blur(6px); }
 
 /* ---------- 悬浮玻璃导航 ---------- */
 nav.bar {
-  position: fixed; top: 14px; left: 50%; z-index: 50;
+  position: fixed; top: calc(14px + env(safe-area-inset-top, 0px)); left: 50%; z-index: 50;
   transform: translateX(-50%);
   width: min(980px, calc(100% - 28px));
   border-radius: 999px;
   transition: width .6s var(--spring), top .4s var(--ease);
 }
-nav.bar.compact { width: min(720px, calc(100% - 28px)); top: 10px; }
+nav.bar.compact { width: min(720px, calc(100% - 28px)); top: calc(10px + env(safe-area-inset-top, 0px)); }
 nav.bar .inner { display: flex; align-items: center; justify-content: space-between; height: 54px; padding: 0 7px 0 12px; }
 .brand { font-weight: 600; color: var(--text); font-size: 15px; letter-spacing: 0; white-space: nowrap; display: inline-flex; align-items: center; gap: 10px; }
 .brand-logo { width: 30px; height: 30px; display: block; border-radius: 50%;
@@ -323,7 +326,7 @@ footer { padding: 24px 0 120px; color: var(--muted); font-size: 12px; text-align
    LIQUID GLASS 语言切换
    ===================================================== */
 .lang-dock {
-  position: fixed; left: 50%; bottom: 24px; z-index: 65;
+  position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); z-index: 65;
   transform: translateX(-50%);
   display: flex; align-items: center; gap: 2px;
   padding: 5px; border-radius: 999px; isolation: isolate;
@@ -404,7 +407,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 }
 @media (max-width: 560px) {
   .wrap { padding: 0 16px; }
-  nav.bar, nav.bar.compact { width: calc(100% - 20px); top: 10px; }
+  nav.bar, nav.bar.compact { width: calc(100% - 20px); top: calc(10px + env(safe-area-inset-top, 0px)); }
   nav.bar .inner { padding-left: 10px; }
   .links a:not(.keep) { display: none; }
   /* 手机导航菜单：像经历卡片一样从单行导航条向下展开（grid-template-rows 0fr → 1fr） */
@@ -429,12 +432,12 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
   .body ul { padding: 0 18px 20px 36px; }
   .stat { padding: 22px; } .stat .n { font-size: 44px; }
   .tile { padding: 26px; min-height: 0; }
-  .lang-dock { bottom: 16px; }
+  .lang-dock { bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
 }
 
 /* ---------- 语言提示（首次访问时按浏览器语言提示，不自动跳转） ---------- */
 .lang-hint {
-  position: fixed; left: 50%; bottom: 84px; z-index: 66;
+  position: fixed; left: 50%; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); z-index: 66;
   display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 18px; border-radius: 999px;
   font-size: 14px; white-space: nowrap;
   transform: translate(-50%, 16px) scale(.94); opacity: 0;
