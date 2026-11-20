@@ -279,6 +279,22 @@
     setTimeout(function () { hintBox.classList.add('show'); }, 1200);
   }
 
+  /* ---------- 语言栏：往下滚动时藏到屏幕下方，往上滚动、在页面顶部或底部时出现 ---------- */
+  if (dock) {
+    var lastY = scrollY, ticking = false, root = document.documentElement;
+    var setAway = function (away) { root.classList.toggle('dock-away', away); };
+    var onDockScroll = function () {
+      ticking = false;
+      var y = scrollY, dy = y - lastY;
+      var nearEnd = y + innerHeight >= root.scrollHeight - 80;
+      if (y < 120 || nearEnd || dock.contains(document.activeElement)) { setAway(false); lastY = y; return; }
+      if (dy > 8) { setAway(true); lastY = y; }
+      else if (dy < -8) { setAway(false); lastY = y; }
+    };
+    addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onDockScroll); } }, { passive: true });
+    dock.addEventListener('focusin', function () { setAway(false); });
+  }
+
   // 用浏览器“返回”回到本页时（页面从缓存恢复），取消切换语言时的淡出效果
   addEventListener('pageshow', function (e) {
     if (e.persisted) { document.body.classList.remove('switching'); if (dock) placeLens(current(), false); }

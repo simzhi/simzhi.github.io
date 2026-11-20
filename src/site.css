@@ -337,6 +337,10 @@ footer { padding: 24px 0 120px; color: var(--muted); font-size: 12px; text-align
 }
 @keyframes dockIn { from { opacity: 0; transform: translate(-50%, 40px) scale(.8); } }
 .lang-dock:active { transform: translateX(-50%) scale(1.03); }
+/* 往下滚动时语言栏和语言提示一起滑到屏幕下方（site.js 给 <html> 加 dock-away） */
+.lang-dock { transition: transform .45s var(--spring), opacity .3s var(--ease); }
+html.dock-away .lang-dock { transform: translate(-50%, calc(100% + 40px)); opacity: 0; pointer-events: none; }
+html.dock-away .lang-hint.show { transform: translate(-50%, 110px) scale(.94); opacity: 0; pointer-events: none; }
 .lang-dock::after {
   content: ""; position: absolute; left: 10%; right: 10%; top: 2px; height: 45%;
   border-radius: 999px; pointer-events: none; z-index: 0;
