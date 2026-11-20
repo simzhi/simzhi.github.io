@@ -97,7 +97,7 @@ ${noindex ? '<meta name="robots" content="noindex">\n' : ''}${canonical ? `<link
 <meta property="og:site_name" content="Zhihao Yang">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
-${canonical ? `<meta property="og:url" content="${canonical}">\n` : ''}<meta property="og:image" content="${BASE}/og-image.png">
+${canonical ? `<meta property="og:url" content="${canonical}">\n` : ''}<meta property="og:image" content="${BASE}/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="${OG_LOCALE[l]}">
@@ -111,7 +111,8 @@ ${extra}</head>`;
 const themeButton = `<button class="theme-btn" id="themeBtn" type="button" aria-label="Light / Dark" title="Light / Dark"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>`;
 
 function navBar(l, links) {
-  return `<nav class="bar" id="nav" aria-label="Main">
+  return `<a class="skip" href="#main">${ui(l, 'skip')}</a>
+<nav class="bar" id="nav" aria-label="Main">
   <div class="inner">
     <a class="brand" href="${home(l)}#top"><img class="brand-logo" src="/logo.svg" alt="" width="30" height="30"><span>${ui(l, 'name.short')}</span></a>
     <div class="links">
@@ -170,7 +171,11 @@ function hero(l) {
         </div>
       </div>
       <div class="portrait-wrap reveal d2">
-        <div class="portrait" id="portrait"><div class="photo"><img src="/photo.jpg" alt="${esc(uiPlain(l, 'name.short'))}" width="2800" height="2069" fetchpriority="high"></div></div>
+        <div class="portrait" id="portrait"><div class="photo"><picture>
+          <source type="image/avif" srcset="/img/portrait-400.avif 400w, /img/portrait-700.avif 700w, /img/portrait-1000.avif 1000w" sizes="(max-width: 820px) min(290px, 74vw), 350px">
+          <source type="image/webp" srcset="/img/portrait-400.webp 400w, /img/portrait-700.webp 700w, /img/portrait-1000.webp 1000w" sizes="(max-width: 820px) min(290px, 74vw), 350px">
+          <img src="/img/portrait-700.jpg" srcset="/img/portrait-400.jpg 400w, /img/portrait-700.jpg 700w, /img/portrait-1000.jpg 1000w" sizes="(max-width: 820px) min(290px, 74vw), 350px" alt="${esc(uiPlain(l, 'name.short'))}" width="1000" height="1250" fetchpriority="high">
+        </picture></div></div>
         <div class="badge"><span class="dot"></span> ${ui(l, 'hero.badge')}</div>
       </div>
     </div>
@@ -271,11 +276,11 @@ function journey(l) {
     <div class="wrap">
       <p class="kicker reveal">${ui(l, 'journey.kicker')}</p>
       <h2 class="reveal d1">${ui(l, 'journey.title')}</h2>
-      <div class="seg reveal d2" id="seg" role="tablist">
+      <div class="seg reveal d2" id="seg" role="group">
         <span class="pill" id="segPill"></span>
-        <button type="button" data-filter="all" aria-selected="true">${ui(l, 'filter.all')}</button>
-        <button type="button" data-filter="work" aria-selected="false">${ui(l, 'filter.work')}</button>
-        <button type="button" data-filter="edu" aria-selected="false">${ui(l, 'filter.edu')}</button>
+        <button type="button" data-filter="all" aria-pressed="true">${ui(l, 'filter.all')}</button>
+        <button type="button" data-filter="work" aria-pressed="false">${ui(l, 'filter.work')}</button>
+        <button type="button" data-filter="edu" aria-pressed="false">${ui(l, 'filter.edu')}</button>
       </div>
       <ul class="timeline" id="timeline">
         ${items}
@@ -325,7 +330,7 @@ function personLd() {
     name: p.name,
     alternateName: p.alternateName,
     url: `${BASE}/`,
-    image: `${BASE}/photo.jpg`,
+    image: `${BASE}/img/portrait-1000.jpg`,
     jobTitle: p.jobTitle,
     worksFor: { '@type': 'Organization', name: p.worksFor },
     address: { '@type': 'PostalAddress', addressLocality: p.city, addressCountry: p.country },

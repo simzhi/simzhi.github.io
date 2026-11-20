@@ -6,7 +6,7 @@
   --text: #1d1d1f;
   --muted: #5e5e66;
   --line: rgba(0,0,0,.08);
-  --accent: #0071e3;          /* ← 强调色 */
+  --accent: #0066cc;          /* ← 强调色（比 Apple 的 #0071e3 稍深，满足 WCAG AA 对比度） */
   --accent-2: #5e5ce6;
   --radius: 26px;
   --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "Segoe UI", Inter, Roboto, Arial, "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
@@ -370,6 +370,11 @@ footer { padding: 24px 0 120px; color: var(--muted); font-size: 12px; text-align
 .js .reveal { opacity: 0; transform: translateY(32px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
 .js .reveal.in { opacity: 1; transform: none; }
 .d1 { transition-delay: .08s; } .d2 { transition-delay: .16s; } .d3 { transition-delay: .24s; }
+
+/* 键盘操作：统一的可见焦点框，以及“跳到正文”链接（只在按 Tab 时出现） */
+a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 10px; }
+.skip { position: fixed; left: 16px; top: -60px; z-index: 1000; padding: 10px 16px; border-radius: 12px; background: #0066cc; color: #fff; font-weight: 600; text-decoration: none; transition: top .2s; }
+.skip:focus { top: 16px; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }

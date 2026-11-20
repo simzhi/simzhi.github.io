@@ -126,14 +126,14 @@
   var seg = $('#seg'), pill = $('#segPill');
   function initPill() {
     if (!seg) return;
-    var btn = seg.querySelector('[aria-selected="true"]');
+    var btn = seg.querySelector('[aria-pressed="true"]');
     pill.style.width = btn.offsetWidth + 'px';
     pill.style.transform = 'translateX(' + (btn.offsetLeft - 5) + 'px)';
   }
   if (seg) {
     $$('button', seg).forEach(function (btn) {
       btn.addEventListener('click', function () {
-        $$('button', seg).forEach(function (x) { x.setAttribute('aria-selected', x === btn); });
+        $$('button', seg).forEach(function (x) { x.setAttribute('aria-pressed', x === btn); });
         initPill();
         var f = btn.dataset.filter;
         $$('.timeline .item').forEach(function (it) {

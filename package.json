@@ -2,9 +2,13 @@
   "name": "zhihaoyang.com",
   "private": true,
   "type": "module",
-  "description": "Personal website of Zhihao Yang – static build, no dependencies",
+  "description": "Personal website of Zhihao Yang – static build; sharp is only needed to regenerate images",
   "scripts": {
     "build": "node build.mjs",
-    "preview": "node build.mjs --drafts && node serve.mjs"
+    "preview": "node build.mjs --drafts && node serve.mjs",
+    "images": "node scripts/images.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.5"
   }
 }

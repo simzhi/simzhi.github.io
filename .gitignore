@@ -1,3 +1,4 @@
 # 构建生成的网站，由 GitHub Actions 重新生成，不提交
 dist/
 .claude/
+node_modules/
