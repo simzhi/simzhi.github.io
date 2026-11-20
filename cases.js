@@ -87,7 +87,7 @@ window.CASES = [
     },
     "en": {
       "title": "Lighting a new electric vehicle: from prototype to pre-series",
-      "meta": "Magna Steyr Engineering · Lead Engineer, Exterior Lighting · 2024–2025",
+      "meta": "Magna Steyr Engineering · Lead Engineer, Exterior Lighting (from 2024) · 2023–2025",
       "sections": [
         {
           "h": "Context",
@@ -121,7 +121,7 @@ window.CASES = [
     },
     "de": {
       "title": "Licht für ein neues Elektrofahrzeug: vom Prototyp zur Vorserie",
-      "meta": "Magna Steyr Engineering · Lead Engineer Außenbeleuchtung · 2024–2025",
+      "meta": "Magna Steyr Engineering · Lead Engineer Außenbeleuchtung (ab 2024) · 2023–2025",
       "sections": [
         {
           "h": "Ausgangslage",
@@ -155,7 +155,7 @@ window.CASES = [
     },
     "zh": {
       "title": "为一款新电动车设计灯光：从原型到预批量",
-      "meta": "Magna Steyr Engineering · 外部照明 Lead Engineer · 2024–2025",
+      "meta": "Magna Steyr Engineering · 外部照明 Lead Engineer（2024 年起）· 2023–2025",
       "sections": [
         {
           "h": "背景",
@@ -332,7 +332,7 @@ window.CASES = [
       "sections": [
         {
           "h": "Context",
-          "html": "<p>When an alarm goes off, a control room has seconds to understand what is happening and send the right people. OnCall is the software these teams use to take alarms, dispatch responders and coordinate the response. I implement it for industrial customers that run their own control rooms. I supported one project with about 10 dispatch positions through to go-live, handling configuration, installation, testing and on-site go-live support. I am now working on a second with about 20 positions, currently in requirements clarification. Its requirements specification runs to about 100 pages and more than 600 requirements.</p>"
+          "html": "<p>When an alarm goes off, a control room has seconds to understand what is happening and send the right people. OnCall is the software these teams use to take alarms, dispatch responders and coordinate the response. I implement it for industrial customers that run their own control rooms. I supported one project through to go-live, handling configuration, installation, testing and on-site go-live support. I am now working on a second, currently in requirements clarification against the customer's detailed requirements specification.</p>"
         },
         {
           "h": "The challenge",
@@ -366,7 +366,7 @@ window.CASES = [
       "sections": [
         {
           "h": "Ausgangslage",
-          "html": "<p>Wenn ein Alarm eingeht, hat eine Leitstelle nur Sekunden, um die Lage zu verstehen und die richtigen Kräfte zu alarmieren. OnCall ist die Software, mit der diese Teams Alarme annehmen, Einsatzkräfte disponieren und den Einsatz koordinieren. Ich implementiere sie für Industriekunden mit eigenen Leitstellen. Ein Projekt mit rund 10 Dispositionsplätzen habe ich bis zur Inbetriebnahme begleitet, mit Konfiguration, Installation, Tests und Vor-Ort-Unterstützung beim Go-live. Aktuell arbeite ich an einem zweiten mit rund 20 Plätzen, das sich in der Anforderungsklärung befindet. Das Lastenheft umfasst rund 100 Seiten und mehr als 600 Anforderungen.</p>"
+          "html": "<p>Wenn ein Alarm eingeht, hat eine Leitstelle nur Sekunden, um die Lage zu verstehen und die richtigen Kräfte zu alarmieren. OnCall ist die Software, mit der diese Teams Alarme annehmen, Einsatzkräfte disponieren und den Einsatz koordinieren. Ich implementiere sie für Industriekunden mit eigenen Leitstellen. Ein Projekt habe ich bis zur Inbetriebnahme begleitet, mit Konfiguration, Installation, Tests und Vor-Ort-Unterstützung beim Go-live. Aktuell arbeite ich an einem zweiten, das sich in der Anforderungsklärung auf Basis eines umfangreichen Lastenhefts des Kunden befindet.</p>"
         },
         {
           "h": "Die Herausforderung",
@@ -400,7 +400,7 @@ window.CASES = [
       "sections": [
         {
           "h": "背景",
-          "html": "<p>警报响起时，指挥中心只有几秒钟去弄清发生了什么，并派出合适的人。OnCall 就是这些团队用来接警、调度和协调应急响应的软件。我为拥有自己指挥中心的工业客户实施这套系统。一个约 10 个调度席位的项目，我一直支持到上线，负责配置、安装、测试和现场上线支持。目前正在做第二个约 20 个席位的项目，处于需求澄清阶段，客户的需求规格书（Lastenheft）约 100 页、600 多条需求。</p>"
+          "html": "<p>警报响起时，指挥中心只有几秒钟去弄清发生了什么，并派出合适的人。OnCall 就是这些团队用来接警、调度和协调应急响应的软件。我为拥有自己指挥中心的工业客户实施这套系统。一个项目我一直支持到上线，负责配置、安装、测试和现场上线支持。目前正在做第二个项目，处于需求澄清阶段，依据的是客户内容详尽的需求规格书（Lastenheft）。</p>"
         },
         {
           "h": "挑战",

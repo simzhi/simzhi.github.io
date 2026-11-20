@@ -167,16 +167,16 @@ function hero(l) {
     <div class="glow" id="glow"></div>
     <div class="wrap">
       <div>
-        <p class="eyebrow reveal">${ui(l, 'hero.hello')}</p>
-        <h1 class="reveal d1">${ui(l, 'hero.name')}</h1>
-        <p class="rotator reveal d2">${ui(l, 'hero.rotPre')}<span class="word" id="word">${esc(words[0] || '')}</span>${ui(l, 'hero.rotPost')}</p>
-        <p class="lead reveal d2">${ui(l, 'hero.lead')}</p>
-        <div class="ctas reveal d3">
+        <p class="eyebrow">${ui(l, 'hero.hello')}</p>
+        <h1>${ui(l, 'hero.name')}</h1>
+        <p class="rotator">${ui(l, 'hero.rotPre')}<span class="word" id="word">${esc(words[0] || '')}</span>${ui(l, 'hero.rotPost')}</p>
+        <p class="lead">${ui(l, 'hero.lead')}</p>
+        <div class="ctas">
         <a class="btn primary" href="#contact">${ui(l, 'hero.cta1')}</a>
         <a class="btn ghost" href="#journey">${ui(l, 'hero.cta2')}</a>${cv}
         </div>
       </div>
-      <div class="portrait-wrap reveal d2">
+      <div class="portrait-wrap">
         <div class="portrait" id="portrait"><div class="photo"><picture>
           <source type="image/avif" srcset="/img/portrait-400.avif 400w, /img/portrait-700.avif 700w, /img/portrait-1000.avif 1000w" sizes="(max-width: 820px) min(290px, 74vw), 350px">
           <source type="image/webp" srcset="/img/portrait-400.webp 400w, /img/portrait-700.webp 700w, /img/portrait-1000.webp 1000w" sizes="(max-width: 820px) min(290px, 74vw), 350px">
@@ -305,10 +305,10 @@ function contact(l) {
       <h2 class="reveal d1">${ui(l, 'contact.title')}</h2>
       <div class="prose"><p class="reveal d2">${ui(l, 'contact.lead')}</p></div>
       <div class="contact-cards">
-        <a class="ccard reveal" href="mailto:${esc(p.email)}" data-copy="${esc(p.email)}">
+        <a class="ccard reveal" href="#contact" data-mail="${esc([...p.email].reverse().join(''))}">
           <span class="ic" style="background:linear-gradient(135deg,#0a84ff,#5e5ce6)" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg></span>
           <span class="k">${ui(l, 'contact.email')}</span>
-          <span class="v">${esc(p.email)}</span>
+          <span class="v" data-mail-text>${esc(p.email.replace('@', ' [at] '))}</span>
           <span class="h">${ui(l, 'contact.copy')}</span>
           <span class="go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg></span>
         </a>

@@ -49,7 +49,7 @@ window.SITE = {
     "hero.rotPost": { en: "<br>into working solutions.",     de: "<br>funktionierende Lösungen.",  zh: "<br>变成可落地的解决方案。" },
     "hero.lead": {
       en: "Engineer at the intersection of customers, software and technical systems. Based near Munich.",
-      de: "Ingenieur an der Schnittstelle von Kunden, Software und technischen Systemen. Zuhause bei München.",
+      de: "Ingenieur an der Schnittstelle von Kunden, Software und technischen Systemen. Lebt bei München.",
       zh: "工作在客户、软件与技术系统交汇处的工程师，现居慕尼黑附近。"
     },
     "hero.cta1":   { en: "Get in touch",     de: "Kontakt aufnehmen", zh: "联系我" },

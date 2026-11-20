@@ -172,6 +172,13 @@
     toast.textContent = msg; toast.classList.add('show');
     clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove('show'); }, 2000);
   }
+  // 邮箱地址在 HTML 里是倒序存放的（防爬虫收集），这里拼回来，设置 mailto 和“点击复制”
+  $$('[data-mail]').forEach(function (el) {
+    var addr = el.getAttribute('data-mail').split('').reverse().join('');
+    el.setAttribute('href', 'mailto:' + addr);
+    el.setAttribute('data-copy', addr);
+    var t = el.querySelector('[data-mail-text]'); if (t) t.textContent = addr;
+  });
   $$('[data-copy]').forEach(function (el) {
     el.addEventListener('click', function (e) {
       if (!navigator.clipboard) return;          // 退回到 mailto

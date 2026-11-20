@@ -494,7 +494,8 @@ footer nav a { color: var(--muted); }
   color: var(--text); text-decoration: none; transition: transform .5s var(--spring), opacity .9s var(--ease);
 }
 .work-card:hover { transform: translateY(-5px) scale(1.01); text-decoration: none; }
-.work-card .meta { font-size: 13px; color: var(--muted); }
+/* 卡片顶部的“公司 · 职位 · 时间”：字号稍大，颜色更接近正文，深色模式下也能看清 */
+.work-card .meta { font-size: 14px; font-weight: 500; line-height: 1.4; color: color-mix(in srgb, var(--text) 70%, var(--muted)); }
 .work-card h3 { font-size: 22px; line-height: 1.25; letter-spacing: -0.02em; margin: 0; }
 .work-card p { margin: 0; color: var(--muted); font-size: 16px; flex: 1; }
 .work-card .more { color: var(--accent); font-weight: 600; font-size: 15px; margin-top: 6px; }
@@ -504,7 +505,9 @@ footer nav a { color: var(--muted); }
   -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur); box-shadow: var(--g-shadow); }
 
 /* Journey 里指向案例的链接 */
-.body .case-link { margin: 0; padding: 0 24px 22px calc(24px + 120px + 16px); font-weight: 600; }
+.body .case-link { margin: 0; padding: 0 24px 12px calc(24px + 120px + 16px); font-weight: 600; }
+/* 链接本身至少 44px 高，手机上好点 */
+.body .case-link a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; margin-left: -12px; border-radius: 12px; }
 
 /* ---------- Side projects：可展开卡片（不需要 JS） ---------- */
 .side-card { border-radius: var(--radius); padding: 0; overflow: hidden; }
@@ -563,7 +566,7 @@ html[lang^="zh"] .case h1 { letter-spacing: 0; }
   .fig-narrow { display: block !important; }
 }
 @media (max-width: 560px) {
-  .body .case-link { padding: 0 18px 20px 36px; }
+  .body .case-link { padding: 0 18px 10px 36px; }
   .side-card summary { padding: 22px; grid-template-columns: 1fr; }
   .side-card summary .toggle { grid-column: 1; grid-row: auto; }
   .side-card .side-body { padding: 0 22px 22px; }
