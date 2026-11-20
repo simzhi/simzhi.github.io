@@ -1,0 +1,10 @@
+{
+  "name": "zhihaoyang.com",
+  "private": true,
+  "type": "module",
+  "description": "Personal website of Zhihao Yang – static build, no dependencies",
+  "scripts": {
+    "build": "node build.mjs",
+    "preview": "node build.mjs --drafts && node serve.mjs"
+  }
+}

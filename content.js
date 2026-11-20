@@ -1,6 +1,8 @@
 /* ==========================================================================
-   网站全部文字都在这个文件里 —— 修改文字只需要改这里，不用动 index.html
+   网站全部文字都在这个文件里 —— 修改文字只需要改这里。
    All text on the website lives in this file.
+   构建脚本 build.mjs 会读取这个文件，生成 /、/de/、/zh/ 三个语言的页面。
+   改完后运行  npm run preview  在本地查看；推送到 main 后自动发布。
 
    规则很简单：
    • 每段文字都写成 { en: "英文", de: "德文", zh: "中文" }
@@ -11,6 +13,20 @@
    ========================================================================== */
 
 window.SITE = {
+
+  /* ---------------- 搜索引擎用的个人信息（JSON-LD 结构化数据） ---------------- */
+  person: {
+    name: "Zhihao Yang",
+    alternateName: "杨志豪",
+    jobTitle: "Senior Implementation Analyst",
+    worksFor: "HxGN Safety & Infrastructure",
+    city: "Munich",
+    country: "DE",
+    alumniOf: "Technical University of Munich",
+    languages: ["en", "de", "zh"],
+    linkedin: "https://www.linkedin.com/in/zh-yang",
+    email: "zhihao.yang@gmx.de"
+  },
 
   /* ---------------- 零散的短文字 ---------------- */
   ui: {
@@ -96,6 +112,23 @@ window.SITE = {
     "contact.map":       { en: "Open in Maps ›", de: "In Karte öffnen ›",    zh: "在地图中打开 ›" },
     "toast.copied":      { en: "✓ Email copied", de: "✓ E-Mail kopiert",     zh: "✓ 邮箱已复制" },
 
+    /* 简历下载按钮（只有 cv/ 文件夹里有对应语言的 PDF 时才会显示） */
+    "cv.download":       { en: "Download CV",    de: "Lebenslauf herunterladen", zh: "下载简历" },
+
+    /* 语言提示：访客浏览器是另一种语言时显示，用的是“目标语言”的文字 */
+    "langhint.text":     { en: "This page is also available in English.", de: "Diese Seite gibt es auch auf Deutsch.", zh: "本页面也有中文版。" },
+    "langhint.go":       { en: "Switch",         de: "Wechseln",             zh: "切换" },
+    "langhint.close":    { en: "Close",          de: "Schließen",            zh: "关闭" },
+
+    /* 页脚的法律链接（页面内容在 legal.js） */
+    "legal.impressum":   { en: "Imprint",        de: "Impressum",            zh: "Impressum" },
+    "legal.privacy":     { en: "Privacy",        de: "Datenschutz",          zh: "隐私声明" },
+
+    /* 404 页面 */
+    "404.title":         { en: "Page not found", de: "Seite nicht gefunden", zh: "页面不存在" },
+    "404.text":          { en: "This page doesn't exist or has moved.", de: "Diese Seite gibt es nicht oder sie wurde verschoben.", zh: "这个页面不存在，或已经移动。" },
+    "404.back":          { en: "Back to home",   de: "Zur Startseite",       zh: "返回首页" },
+
     "footer": {
       en: "© 2026 Zhihao Yang · Designed with care in Munich",
       de: "© 2026 Zhihao Yang · Mit Sorgfalt gestaltet in München",
@@ -151,7 +184,7 @@ window.SITE = {
     { type: "work",
       when:  { en: "2025 – today", de: "2025 – heute", zh: "2025 – 至今" },
       title: { en: "Senior Implementation Analyst", de: "Senior Implementation Analyst", zh: "高级实施分析师" },
-      place: { en: "HxGN Safety & Infrastructure · Munich area", de: "HxGN Safety & Infrastructure · Großraum München", zh: "HxGN Safety & Infrastructure · 慕尼黑地区" },
+      place: { en: "HxGN Safety & Infrastructure, an Octave company · Munich area", de: "HxGN Safety & Infrastructure, ein Unternehmen von Octave · Großraum München", zh: "HxGN Safety & Infrastructure（隶属 Octave）· 慕尼黑地区" },
       points: {
         en: ["Implement and configure mission-critical software for public-safety customers.",
              "Turn customer workflows into clear requirements and system configurations.",
