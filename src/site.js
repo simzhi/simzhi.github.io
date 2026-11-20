@@ -36,7 +36,7 @@
   var bar = $('#progress'), nav = $('#nav');
   function onScroll() {
     var h = document.documentElement.scrollHeight - innerHeight;
-    if (bar) bar.style.width = (h > 0 ? scrollY / h * 100 : 0) + '%';
+    if (bar) bar.style.transform = 'scaleX(' + (h > 0 ? Math.min(1, scrollY / h) : 0) + ')';
     if (nav) nav.classList.toggle('compact', scrollY > 60);
   }
   addEventListener('scroll', onScroll, { passive: true }); onScroll();

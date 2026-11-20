@@ -125,11 +125,12 @@ ${links}
       <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="${uiPlain(l, 'nav.menu')}"><span></span><span></span></button>` : ''}
     </div>
   </div>
+  <span class="progress" id="progress" aria-hidden="true"></span>
 </nav>`;
 }
 
 const ambient = `<div class="ambient" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="b4"></i></div>
-<div id="progress"></div>`;
+`;
 
 const refractFilter = `<svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <filter id="lg-refract" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">
@@ -181,7 +182,7 @@ function hero(l) {
           <source type="image/webp" srcset="/img/portrait-400.webp 400w, /img/portrait-700.webp 700w, /img/portrait-1000.webp 1000w" sizes="(max-width: 820px) min(290px, 74vw), 350px">
           <img src="/img/portrait-700.jpg" srcset="/img/portrait-400.jpg 400w, /img/portrait-700.jpg 700w, /img/portrait-1000.jpg 1000w" sizes="(max-width: 820px) min(290px, 74vw), 350px" alt="${esc(uiPlain(l, 'name.short'))}" width="1000" height="1250" fetchpriority="high">
         </picture></div></div>
-        <div class="badge"><span class="dot"></span> ${ui(l, 'hero.badge')}</div>
+        <div class="badge"><svg class="badge-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7M3 12.5h18"/></svg>${ui(l, 'hero.badge')}</div>
       </div>
     </div>
   </header>`;
@@ -309,18 +310,21 @@ function contact(l) {
           <span class="k">${ui(l, 'contact.email')}</span>
           <span class="v">${esc(p.email)}</span>
           <span class="h">${ui(l, 'contact.copy')}</span>
+          <span class="go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg></span>
         </a>
         <a class="ccard reveal d1" href="${esc(p.linkedin)}" target="_blank" rel="noopener">
           <span class="ic" style="background:linear-gradient(135deg,#0a66c2,#2997ff)" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.5 8.5h-3V20h3V8.5zM5 3.5a1.75 1.75 0 1 0 0 3.5 1.75 1.75 0 0 0 0-3.5zM20.5 13.3c0-3-1.6-4.9-4.2-4.9-1.4 0-2.4.7-2.8 1.4V8.5h-3V20h3v-6c0-1.5.6-2.6 2-2.6s1.9 1 1.9 2.6v6h3.1v-6.7z"/></svg></span>
           <span class="k">LinkedIn</span>
           <span class="v">in/${esc(p.linkedin.replace(/.*\/in\//, '').replace(/\/$/, ''))}</span>
           <span class="h">${ui(l, 'contact.open')}</span>
+          <span class="go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span>
         </a>
         <a class="ccard reveal d2" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(p.city + ', Germany')}" target="_blank" rel="noopener">
           <span class="ic" style="background:linear-gradient(135deg,#30d158,#0a84ff)" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>
           <span class="k">${ui(l, 'contact.location')}</span>
           <span class="v">${ui(l, 'contact.place')}</span>
           <span class="h">${ui(l, 'contact.map')}</span>
+          <span class="go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span>
         </a>
       </div>${cv}
     </div>
