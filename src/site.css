@@ -3,6 +3,8 @@
    ========================================================= */
 :root {
   --bg: #f2f4f8;
+  --edge-top: #cfdefa;      /* iPhone 上拉到页面顶部 / 底部回弹时露出的颜色，取自背景光斑在边缘的平均色 */
+  --edge-bottom: #e0e9e0;
   --text: #1d1d1f;
   --muted: #5e5e66;
   --line: rgba(0,0,0,.08);
@@ -33,6 +35,8 @@
 }
 :root[data-theme="dark"] {
   --bg: #050608;
+  --edge-top: #0b173a;
+  --edge-bottom: #20251d;
   --text: #f5f5f7;
   --muted: #a8a8b0;
   --line: rgba(255,255,255,.10);
@@ -54,9 +58,11 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+/* 页面底色画在背景光斑层（.ambient）上；html 的底色只在回弹区域露出来，用接近光斑边缘的颜色 */
+html { background-color: var(--edge-top); }
+html.at-end { background-color: var(--edge-bottom); }
 body {
   margin: 0;
-  background: var(--bg);
   color: var(--text);
   font-family: var(--font);
   font-size: 17px;
@@ -73,7 +79,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---------- 背景：缓慢流动的光斑（玻璃需要有东西可以“透”） ---------- */
 /* 背景光斑层上下各多出 --edge，盖住 iPhone Safari 状态栏、底部工具栏和回弹区域，不留纯色边 */
-.ambient { --edge: 160px; position: fixed; top: calc(-1 * var(--edge)); bottom: calc(-1 * var(--edge)); left: 0; right: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.ambient { --edge: 160px; background-color: var(--bg); transition: background-color .6s var(--ease); position: fixed; top: calc(-1 * var(--edge)); bottom: calc(-1 * var(--edge)); left: 0; right: 0; z-index: -1; overflow: hidden; pointer-events: none; }
 .ambient .b1, .ambient .b2 { margin-top: var(--edge); }
 .ambient .b3, .ambient .b4 { margin-bottom: var(--edge); }
 .ambient i { position: absolute; border-radius: 50%; opacity: var(--blob-o); transition: opacity .6s; will-change: transform; }

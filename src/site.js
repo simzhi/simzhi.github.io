@@ -38,6 +38,8 @@
     var h = document.documentElement.scrollHeight - innerHeight;
     if (bar) bar.style.width = (h > 0 ? scrollY / h * 100 : 0) + '%';
     if (nav) nav.classList.toggle('compact', scrollY > 60);
+    // 滚过页面一半后，回弹区域用底部的颜色
+    document.documentElement.classList.toggle('at-end', h > 0 && scrollY > h / 2);
   }
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
