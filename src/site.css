@@ -138,6 +138,7 @@ nav.bar .inner { display: flex; align-items: center; justify-content: space-betw
 .theme-btn:hover { transform: scale(1.08); }
 .theme-btn:active { transform: scale(.9) rotate(40deg); }
 .theme-btn svg { width: 17px; height: 17px; }
+.menu-list, .menu-inner { display: contents; }
 .menu-btn { display: none; place-content: center; gap: 5px; width: 40px; height: 40px; margin-left: 4px; border: 0; border-radius: 50%; background: transparent; color: var(--text); cursor: pointer; }
 .menu-btn span { display: block; width: 16px; height: 1.8px; border-radius: 2px; background: currentColor; transition: transform .3s var(--spring); }
 nav.bar.open .menu-btn span:first-child { transform: translateY(3.4px) rotate(45deg); }
@@ -402,21 +403,22 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
   nav.bar, nav.bar.compact { width: calc(100% - 20px); top: 10px; }
   nav.bar .inner { padding-left: 10px; }
   .links a:not(.keep) { display: none; }
-  /* 手机导航菜单：链接收进菜单按钮，点开后在导航条里竖排显示 */
-  nav.bar.has-menu { transition: width .6s var(--spring), top .4s var(--ease), border-radius .35s var(--ease); }
-  nav.bar.has-menu .inner { display: grid; grid-template-columns: 1fr auto auto; grid-template-rows: 54px; height: auto; align-items: center; }
+  /* 手机导航菜单：像经历卡片一样从单行导航条向下展开（grid-template-rows 0fr → 1fr） */
+  nav.bar.has-menu { border-radius: 27px; transition: width .6s var(--spring), top .4s var(--ease), background .35s var(--ease); }
+  nav.bar.has-menu .inner { display: grid; grid-template-columns: 1fr auto auto; grid-template-rows: 54px auto; height: auto; align-items: center; }
   nav.bar.has-menu .links { display: contents; }
   nav.bar.has-menu .brand { grid-row: 1; grid-column: 1; }
   nav.bar.has-menu .theme-btn { grid-row: 1; grid-column: 2; }
   nav.bar.has-menu .menu-btn { grid-row: 1; grid-column: 3; }
-  nav.bar.has-menu .links a { display: block; grid-column: 1 / -1; font-size: 17px; padding: 12px 14px; margin: 0 4px; }
-  nav.bar.has-menu .links a:last-of-type { margin-bottom: 10px; }
-  .js nav.bar.has-menu .links a { display: none; }
+  nav.bar.has-menu .menu-list { grid-row: 2; grid-column: 1 / -1; display: grid; grid-template-rows: 1fr; transition: grid-template-rows .45s var(--ease); }
+  nav.bar.has-menu .menu-inner { display: block; overflow: hidden; min-height: 0; transition: opacity .3s var(--ease), visibility 0s; }
+  nav.bar.has-menu .links a { display: block; font-size: 17px; padding: 12px 14px; margin: 0 4px; }
+  nav.bar.has-menu .links a:last-child { margin-bottom: 10px; }
   .js nav.bar.has-menu .menu-btn { display: grid; }
-  .js nav.bar.has-menu.open { border-radius: 28px; background: color-mix(in srgb, var(--bg) 88%, transparent); }
+  .js nav.bar.has-menu:not(.open) .menu-list { grid-template-rows: 0fr; }
+  .js nav.bar.has-menu:not(.open) .menu-inner { opacity: 0; visibility: hidden; transition: opacity .25s var(--ease) .2s, visibility 0s .45s; }
+  .js nav.bar.has-menu.open { background: color-mix(in srgb, var(--bg) 88%, transparent); }
   .js nav.bar.has-menu.open .links a { color: var(--text); }
-  .js nav.bar.has-menu.open .links a { display: block; animation: menuIn .32s var(--ease) both; }
-  @keyframes menuIn { from { opacity: 0; transform: translateY(-6px); } }
   .prose p { font-size: 19px; }
   .item button.head { grid-template-columns: 1fr 30px; padding: 18px; }
   .item .when { grid-column: 1 / -1; order: -1; margin-bottom: -10px; }

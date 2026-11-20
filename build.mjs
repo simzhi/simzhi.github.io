@@ -118,7 +118,9 @@ function navBar(l, links) {
   <div class="inner">
     <a class="brand" href="${home(l)}#top"><img class="brand-logo" src="/logo.svg" alt="" width="30" height="30"><span>${ui(l, 'name.short')}</span></a>
     <div class="links" id="navLinks">
+${menu ? `      <div class="menu-list"><div class="menu-inner">
 ${links}
+      </div></div>` : links}
       ${themeButton}${menu ? `
       <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="${uiPlain(l, 'nav.menu')}"><span></span><span></span></button>` : ''}
     </div>
