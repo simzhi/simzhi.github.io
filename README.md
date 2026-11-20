@@ -7,9 +7,12 @@
 | 文件 / 文件夹 | 作用 | 需要改吗 |
 |---|---|---|
 | `content.js` | **网站全部文字**（英 / 德 / 中三语） | 改文字只改这里 |
+| `cases.js` | 项目案例（Selected work）和 Side projects 的文字、卡片摘要、配图文字 | 改案例文字只改这里 |
+| `src/figures.mjs` | 根据 `cases.js` 生成案例配图（自绘 SVG） | 一般不用改 |
+| `CREDITS.md` | 所有图片的来源和授权 | 加新图片时补一行 |
 | `legal.js` | Impressum 和 Datenschutzerklärung 的内容 | 填写 TODO |
 | `cv/` | 公开版简历 PDF：`cv-en.pdf`、`cv-de.pdf`、`cv-zh.pdf` | 放入文件即可 |
-| `static/` | 照片、logo、图标、分享预览图、CNAME | 换照片时替换同名文件 |
+| `static/` | 照片、logo、图标、分享预览图、CNAME；`static/work/` 是案例照片 | 换照片时替换同名文件 |
 | `src/site.css` | 样式（颜色、字体、布局） | 一般不用改 |
 | `src/site.js` | 动画和交互 | 一般不用改 |
 | `build.mjs` | 构建脚本：生成 `dist/` | 一般不用改 |
@@ -47,6 +50,13 @@ node build.mjs
 也可以直接在 GitHub 网页上编辑 `content.js` 并提交，网站同样会自动更新。
 
 不再需要手动修改版本号：样式和脚本的链接会根据文件内容自动更新，浏览器会拿到最新版本。
+
+## 项目案例
+
+- 案例文字在 `cases.js`，每个案例有 en / de / zh 三种语言。网址是 `/work/<slug>/`、`/de/work/<slug>/`、`/zh/work/<slug>/`。
+- 首页 “Selected work” 卡片上的一句话来自 `summary`；Journey 里的 “查看项目详情” 链接来自 `content.js` 的 `case` 字段。
+- 配图是自绘 SVG，图上的文字写在 `cases.js` 的 `figure` 里。
+- 案例照片放在 `static/work/`，只用可免费商用、看不出品牌和车型的图库照片，页面上标注“示意图片”和作者，并记录到 `CREDITS.md`。
 
 ## 简历下载
 

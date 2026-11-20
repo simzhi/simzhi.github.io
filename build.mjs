@@ -10,6 +10,7 @@ import path from 'node:path';
 import vm from 'node:vm';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { figure } from './src/figures.mjs';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.join(ROOT, 'dist');
@@ -30,6 +31,8 @@ function load(file, key) {
 }
 const S = load('content.js', 'SITE');
 const LEGAL = load('legal.js', 'LEGAL');
+const CASES = load('cases.js', 'CASES');
+const SIDE = load('cases.js', 'SIDE_PROJECTS');
 
 /* ---------- 小工具 ---------- */
 const pick = (o, l) => (o == null ? '' : typeof o === 'string' || Array.isArray(o) ? o : (o[l] != null && o[l] !== '' ? o[l] : (o.en ?? '')));
@@ -39,6 +42,11 @@ const plain = (s) => String(s).replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]+>/g, 
 const ui = (l, k) => { if (!S.ui[k]) warnings.push(`content.js 缺少 ui["${k}"]`); return html(pick(S.ui[k], l)); };
 const uiPlain = (l, k) => plain(pick(S.ui[k], l));
 const home = (l) => (l === 'en' ? '/' : `/${l}/`);
+const caseUrl = (l, slug) => `${home(l)}work/${slug}/`;
+const altsFor = (urlOf) => [
+  ...LANGS.map((x) => ({ hreflang: HTML_LANG[x], href: BASE + urlOf(x) })),
+  { hreflang: 'x-default', href: BASE + urlOf('en') }
+];
 const hash = (file) => crypto.createHash('sha1').update(fs.readFileSync(file)).digest('hex').slice(0, 8);
 const write = (rel, data) => { const f = path.join(OUT, rel); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, data); };
 const json = (o) => JSON.stringify(o).replace(/</g, '\\u003c');
@@ -133,11 +141,11 @@ function footer(l) {
 </footer>`;
 }
 
-function langDock(l) {
+function langDock(l, urlOf = home) {
   return `<div class="lang-dock" id="langDock" role="navigation" aria-label="Language / Sprache / 语言">
   <span class="lens" id="lens"></span>
   <span class="globe" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg></span>
-  ${LANGS.map((x) => `<a class="opt" href="${home(x)}" hreflang="${HTML_LANG[x]}" lang="${HTML_LANG[x]}" data-lang="${x}"${x === l ? ' aria-current="page"' : ''}>${LABEL[x]}</a>`).join('\n  ')}
+  ${LANGS.map((x) => `<a class="opt" href="${urlOf(x)}" hreflang="${HTML_LANG[x]}" lang="${HTML_LANG[x]}" data-lang="${x}"${x === l ? ' aria-current="page"' : ''}>${LABEL[x]}</a>`).join('\n  ')}
 </div>`;
 }
 
@@ -204,13 +212,58 @@ function values(l) {
   </section>`;
 }
 
+function caseLink(j, l) {
+  if (!j.case) return '';
+  if (!CASES.some((c) => c.slug === j.case)) { warnings.push(`content.js：经历里的 case “${j.case}” 在 cases.js 里找不到`); return ''; }
+  return `<p class="case-link"><a href="${caseUrl(l, j.case)}">${ui(l, 'journey.caselink')}</a></p>`;
+}
+
+/* ---------- Selected work 和 Side projects ---------- */
+function work(l) {
+  const cards = CASES.map((c, i) => `<a class="work-card reveal${delay(i)}" href="${caseUrl(l, c.slug)}">
+          <span class="meta">${html(c[l].meta)}</span>
+          <h3>${html(c[l].title)}</h3>
+          <p>${html(pick(c.summary, l))}</p>
+          <span class="more">${ui(l, 'case.readmore')}</span>
+        </a>`).join('\n        ');
+  return `<section class="block" id="work">
+    <div class="wrap">
+      <p class="kicker reveal">${ui(l, 'work.kicker')}</p>
+      <h2 class="reveal d1">${ui(l, 'work.title')}</h2>
+      <div class="work-grid">
+        ${cards}
+      </div>
+    </div>
+  </section>`;
+}
+
+function sections(c, l, Hn = 'h2') {
+  return c[l].sections.map((s, i) => `<${Hn}>${html(s.h)}</${Hn}>\n${s.html}${c.figure && c.figure.after === i ? '\n' + figure(c.figure, l) : ''}`).join('\n');
+}
+
+function side(l) {
+  const cards = SIDE.map((p) => `<details class="side-card glass reveal" id="${p.slug}">
+          <summary><h3>${html(p[l].title)}</h3><span class="meta">${html(p[l].meta)}</span><span class="toggle">${ui(l, 'side.toggle')}</span></summary>
+          <div class="side-body">
+${sections(p, l, 'h4')}
+          </div>
+        </details>`).join('\n        ');
+  return `<section class="block" id="side">
+    <div class="wrap">
+      <p class="kicker reveal">${ui(l, 'side.kicker')}</p>
+      <h2 class="reveal d1">${ui(l, 'side.title')}</h2>
+      ${cards}
+    </div>
+  </section>`;
+}
+
 function journey(l) {
   const items = S.journey.map((j, i) => {
     const pts = pick(j.points, l) || [];
     return `<li class="item reveal${i === 0 ? ' open' : ''}" data-type="${j.type}">
           <button class="head" type="button"><span class="when">${html(pick(j.when, l))}</span>
             <span class="title"><strong>${html(pick(j.title, l))}</strong><span>${html(pick(j.place, l))}</span></span>${chev}</button>
-          <div class="body"><div><ul>${pts.map((p) => `<li>${html(p)}</li>`).join('')}</ul></div></div>
+          <div class="body"><div><ul>${pts.map((p) => `<li>${html(p)}</li>`).join('')}</ul>${caseLink(j, l)}</div></div>
         </li>`;
   }).join('\n        ');
   const chips = S.skills.map((s) => `<span class="chip">${html(pick(s, l))}</span>`).join('');
@@ -283,18 +336,26 @@ function personLd() {
 }
 
 /* ---------- 生成三种语言的主页 ---------- */
-const alternates = [
-  ...LANGS.map((x) => ({ hreflang: HTML_LANG[x], href: BASE + home(x) })),
-  { hreflang: 'x-default', href: `${BASE}/` }
-];
+const alternates = altsFor(home);
+/* 页面给 site.js 的数据：当前语言、各语言版本的网址、提示文字等 */
+const pageData = (l, urlOf, extra = {}) => ({
+  lang: l,
+  toast: plain(pick(S.ui['toast.copied'], l)),
+  home: Object.fromEntries(LANGS.map((x) => [x, urlOf(x)])),
+  hint: Object.fromEntries(LANGS.map((x) => [x, { text: uiPlain(x, 'langhint.text'), go: uiPlain(x, 'langhint.go'), close: uiPlain(x, 'langhint.close') }])),
+  ...extra
+});
+const pageEnd = (l, urlOf, data) => `${langDock(l, urlOf)}
+${refractFilter}
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="lang-hint" id="langHint" role="status" hidden></div>
+<script>window.PAGE=${json(data)};</script>
+<script src="/site.js?v=${V.js}" defer></script>
+</body>
+</html>
+`;
 for (const l of LANGS) {
-  const page = {
-    lang: l,
-    words: pick(S.rotator, l),
-    toast: plain(pick(S.ui['toast.copied'], l)),
-    home: Object.fromEntries(LANGS.map((x) => [x, home(x)])),
-    hint: Object.fromEntries(LANGS.map((x) => [x, { text: uiPlain(x, 'langhint.text'), go: uiPlain(x, 'langhint.go'), close: uiPlain(x, 'langhint.close') }]))
-  };
+  const page = pageData(l, home, { words: pick(S.rotator, l) });
   const doc = `${head({
     l,
     title: uiPlain(l, 'page.title'),
@@ -306,27 +367,70 @@ for (const l of LANGS) {
 <body>
 ${ambient}
 ${navBar(l, [
-    ['#about', 'nav.about'], ['#values', 'nav.values'], ['#journey', 'nav.journey'], ['#contact', 'nav.contact']
+    ['#about', 'nav.about'], ['#work', 'nav.work'], ['#values', 'nav.values'], ['#journey', 'nav.journey'], ['#contact', 'nav.contact']
   ].map(([h, k]) => `      <a href="${h}"${k === 'nav.contact' ? ' class="keep"' : ''}>${ui(l, k)}</a>`).join('\n'))}
 <main id="main">
   ${hero(l)}
   ${about(l)}
+  ${work(l)}
   ${values(l)}
   ${journey(l)}
+  ${side(l)}
   ${contact(l)}
   ${footer(l)}
 </main>
-${langDock(l)}
-${refractFilter}
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-<div class="lang-hint" id="langHint" role="status" hidden></div>
-<script>window.PAGE=${json(page)};</script>
-<script src="/site.js?v=${V.js}" defer></script>
-</body>
-</html>
-`;
+${pageEnd(l, home, page)}`;
   write(l === 'en' ? 'index.html' : `${l}/index.html`, doc);
 }
+
+/* 案例照片（通用图库照片，标注“示意图片”和作者） */
+function casePhoto(c, l) {
+  const p = c.photo;
+  if (!p || typeof p !== 'object') return '';
+  return `      <figure class="case-photo glass">
+        <img src="${p.src}-1400.webp" srcset="${p.src}-800.webp 800w, ${p.src}-1400.webp 1400w" sizes="(max-width: 760px) 100vw, 720px" width="${p.width}" height="${p.height}" alt="${esc(pick(p.alt, l))}" decoding="async">
+        <figcaption>${ui(l, 'case.photo')} <a href="${p.credit.url}" rel="noopener">${esc(p.credit.name)}</a> / Unsplash</figcaption>
+      </figure>`;
+}
+
+/* ---------- 案例页面：/work/<slug>/、/de/work/<slug>/、/zh/work/<slug>/ ---------- */
+CASES.forEach((c, i) => {
+  if (typeof c.photo === 'string' && /TODO/.test(c.photo)) warnings.push(`TODO：cases.js 里 “${c.slug}” 的照片还没选（${c.photo}）`);
+  const next = CASES[(i + 1) % CASES.length];
+  const urlOf = (x) => caseUrl(x, c.slug);
+  for (const l of LANGS) {
+    const doc = `${head({
+      l,
+      title: `${plain(c[l].title)} · ${uiPlain(l, 'name.short')}`,
+      description: plain(pick(c.summary, l)),
+      canonical: BASE + urlOf(l),
+      alternates: altsFor(urlOf)
+    })}
+<body>
+${ambient}
+${navBar(l, `      <a href="${home(l)}#work" class="keep">${ui(l, 'nav.work')}</a>`)}
+<main id="main" class="case">
+  <div class="wrap">
+    <article>
+      <a class="back" href="${home(l)}#work">${ui(l, 'case.back')}</a>
+      <h1>${html(c[l].title)}</h1>
+      <p class="meta">${html(c[l].meta)}</p>
+${casePhoto(c, l)}
+      <div class="prose-case">
+${sections(c, l)}
+      </div>
+    </article>
+    <nav class="case-nav" aria-label="Cases">
+      <a class="btn ghost" href="${home(l)}#work">${ui(l, 'case.back')}</a>
+      <a class="btn primary" href="${caseUrl(l, next.slug)}">${ui(l, 'case.next')}</a>
+    </nav>
+  </div>
+  ${footer(l)}
+</main>
+${pageEnd(l, urlOf, pageData(l, urlOf))}`;
+    write(`${urlOf(l).slice(1)}index.html`, doc);
+  }
+});
 
 /* ---------- 法律页面（德语正式版 + 英语说明） ---------- */
 function simplePage({ l, title, description, canonical, noindex, body }) {
@@ -386,6 +490,11 @@ const today = new Date().toISOString().slice(0, 10);
 const altLinks = alternates.map((a) => `    <xhtml:link rel="alternate" hreflang="${a.hreflang}" href="${a.href}"/>`).join('\n');
 const urls = [
   ...LANGS.map((l) => `  <url>\n    <loc>${BASE}${home(l)}</loc>\n    <lastmod>${today}</lastmod>\n${altLinks}\n  </url>`),
+  ...CASES.flatMap((c) => {
+    const urlOf = (x) => caseUrl(x, c.slug);
+    const alts = altsFor(urlOf).map((a) => `    <xhtml:link rel="alternate" hreflang="${a.hreflang}" href="${a.href}"/>`).join('\n');
+    return LANGS.map((l) => `  <url>\n    <loc>${BASE}${urlOf(l)}</loc>\n    <lastmod>${today}</lastmod>\n${alts}\n  </url>`);
+  }),
   ...legalPages.map((p) => `  <url>\n    <loc>${BASE}/${p.path}/</loc>\n    <lastmod>${today}</lastmod>\n  </url>`)
 ];
 write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>

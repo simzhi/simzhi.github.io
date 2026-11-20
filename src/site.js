@@ -99,7 +99,7 @@
       });
       portrait.addEventListener('mouseleave', function () { portrait.style.transform = ''; });
     }
-    var GLASS = '.glass, .badge, .btn, .seg, .stat, .tile, .item, .chip, .ccard, .theme-btn', lastGlass = null;
+    var GLASS = '.glass, .badge, .btn, .seg, .stat, .tile, .item, .chip, .ccard, .theme-btn, .work-card', lastGlass = null;
     document.addEventListener('pointermove', function (e) {
       var g = e.target.closest ? e.target.closest(GLASS) : null;
       if (lastGlass && lastGlass !== g) { lastGlass.style.removeProperty('--mx'); lastGlass.style.removeProperty('--my'); }

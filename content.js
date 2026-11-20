@@ -112,6 +112,19 @@ window.SITE = {
     "contact.map":       { en: "Open in Maps ›", de: "In Karte öffnen ›",    zh: "在地图中打开 ›" },
     "toast.copied":      { en: "✓ Email copied", de: "✓ E-Mail kopiert",     zh: "✓ 邮箱已复制" },
 
+    /* 项目案例（内容在 cases.js） */
+    "nav.work":         { en: "Work",         de: "Projekte",            zh: "项目" },
+    "work.kicker":      { en: "Selected work", de: "Ausgewählte Projekte", zh: "精选项目" },
+    "work.title":       { en: "A closer look at three projects.", de: "Drei Projekte im Detail.", zh: "深入看看三个项目。" },
+    "case.readmore":    { en: "Read more ›",  de: "Weiterlesen ›",       zh: "阅读全文 ›" },
+    "case.back":        { en: "‹ All projects", de: "‹ Alle Projekte",   zh: "‹ 全部项目" },
+    "case.next":        { en: "Next case ›",  de: "Nächstes Projekt ›",  zh: "下一个项目 ›" },
+    "case.photo":       { en: "Symbolic image · Photo:", de: "Symbolbild · Foto:", zh: "示意图片 · 摄影：" },
+    "journey.caselink": { en: "Read the case study ›", de: "Zur Fallstudie ›", zh: "查看项目详情 ›" },
+    "side.kicker":      { en: "Side projects", de: "Privatprojekte",     zh: "个人项目" },
+    "side.title":       { en: "What I build at home.", de: "Was ich zu Hause baue.", zh: "业余时间做的事。" },
+    "side.toggle":      { en: "Read more",    de: "Mehr lesen",          zh: "展开全文" },
+
     /* 简历下载按钮（只有 cv/ 文件夹里有对应语言的 PDF 时才会显示） */
     "cv.download":       { en: "Download CV",    de: "Lebenslauf herunterladen", zh: "下载简历" },
 
@@ -181,7 +194,8 @@ window.SITE = {
      type: "work" 工作 或 "edu" 教育
      points: 点开后显示的要点，每种语言一个列表 */
   journey: [
-    { type: "work",
+    { case: "control-room-software",   /* 链接到 cases.js 里的案例 */
+      type: "work",
       when:  { en: "2025 – today", de: "2025 – heute", zh: "2025 – 至今" },
       title: { en: "Senior Implementation Analyst", de: "Senior Implementation Analyst", zh: "高级实施分析师" },
       place: { en: "HxGN Safety & Infrastructure, an Octave company · Munich area", de: "HxGN Safety & Infrastructure, ein Unternehmen von Octave · Großraum München", zh: "HxGN Safety & Infrastructure（隶属 Octave）· 慕尼黑地区" },
@@ -199,7 +213,8 @@ window.SITE = {
              "与客户及国际团队协调测试、问题修复和上线。",
              "负责公司两款自有软件产品的运营支持。"]
       } },
-    { type: "work",
+    { case: "ev-lighting",   /* 链接到 cases.js 里的案例 */
+      type: "work",
       when:  { en: "2023 – 2025" },
       title: { en: "Project / Lead Engineer, Automotive Lighting", de: "Project / Lead Engineer – Automotive Lighting", zh: "项目工程师 / 主管工程师 · 汽车照明" },
       place: { en: "Magna Steyr Engineering · Munich", de: "Magna Steyr Engineering · München", zh: "麦格纳斯太尔工程 · 慕尼黑" },
@@ -214,7 +229,8 @@ window.SITE = {
              "与设计和工程部门对齐需求，协调国际供应商。",
              "与客户、产品管理、采购和销售协作；参与 PFMEA 风险评估。"]
       } },
-    { type: "work",
+    { case: "talking-to-pedestrians",   /* 链接到 cases.js 里的案例 */
+      type: "work",
       when:  { en: "2022 – 2023" },
       title: { en: "Master's Thesis & Internship, Lighting Innovation", de: "Masterarbeit & Praktikum – Beleuchtungsinnovation", zh: "硕士论文与实习 · 照明创新" },
       place: { en: "AUDI AG · Ingolstadt", zh: "奥迪 AUDI AG · 因戈尔施塔特" },
@@ -241,7 +257,8 @@ window.SITE = {
         zh: ["开发并维护用于跟踪型式认证的 Access 数据库。",
              "整理并记录 ISO 21448、ISO 21434 等标准。"]
       } },
-    { type: "edu",
+    { case: "talking-to-pedestrians",   /* 链接到 cases.js 里的案例 */
+      type: "edu",
       when:  { en: "2021 – 2023" },
       title: { en: "M.Sc. Robotics, Cognition, Intelligence", zh: "机器人、认知与智能 · 理学硕士" },
       place: { en: "Technical University of Munich", de: "Technische Universität München", zh: "慕尼黑工业大学" },
