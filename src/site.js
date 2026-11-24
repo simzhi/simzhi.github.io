@@ -321,49 +321,119 @@
     } catch (err) {}
   }
 
-  // 2. 车灯模式：↑↑↓↓←→←→BA 打开 / 关闭，Esc 关闭
-  var lamp = null;
+  // 2. 车灯模式：整页变暗，只剩一束近光灯的光型（明暗截止线：左侧水平、右侧 15° 上扬），跟着鼠标 / 手指走
+  //    电脑：↑↑↓↓←→←→BA 打开，Esc 或再输一次关闭
+  //    手机：在页面上划 ↑↑↓↓←→←→，再点两下打开；两指轻点关闭
+  var touch = matchMedia('(pointer: coarse)').matches;   // 主要用手指操作的设备：提示文字换成手势说明
+  var lamp = null, aimX = innerWidth / 2, aimY = innerHeight * 0.45, aimQueued = false;
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  function placeBeam() {
+    aimQueued = false;
+    if (!lamp) return;
+    var k = Math.max(0.55, Math.min(1, innerWidth / 900));
+    var t = 'translate(' + aimX + ' ' + aimY + ') scale(' + k + ')';
+    lamp.querySelectorAll('.hl-move').forEach(function (g) { g.setAttribute('transform', t); });
+  }
+  function aim(x, y) {
+    aimX = x; aimY = y;
+    if (!aimQueued) { aimQueued = true; requestAnimationFrame(placeBeam); }
+  }
   function lights(on) {
     if (!lamp) {
-      lamp = document.createElement('div');
-      lamp.className = 'headlights'; lamp.setAttribute('aria-hidden', 'true');
+      // 坐标以光斑最亮处为原点；截止线拐点在它左上方 (-40, -40)
+      var cut = 'M-520 -40L-40 -40L190 -102L520 -102L520 320L-520 320Z';
+      var wrap = document.createElement('div');
+      wrap.innerHTML = '<svg class="headlights" xmlns="' + SVGNS + '" aria-hidden="true"><defs>' +
+        '<clipPath id="hlCut"><path d="' + cut + '"/></clipPath>' +
+        '<radialGradient id="hlHole" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="430" gradientTransform="scale(1 .5)">' +
+          '<stop offset="0" stop-color="#000"/><stop offset=".3" stop-color="#000"/><stop offset=".72" stop-color="#7a7a7a"/><stop offset="1" stop-color="#fff"/></radialGradient>' +
+        '<radialGradient id="hlWarm" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="380" gradientTransform="scale(1 .45)">' +
+          '<stop offset="0" stop-color="#fff3d6" stop-opacity=".26"/><stop offset=".5" stop-color="#ffe7b0" stop-opacity=".1"/><stop offset="1" stop-color="#ffe7b0" stop-opacity="0"/></radialGradient>' +
+        '<mask id="hlMask" maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">' +
+          '<rect width="100%" height="100%" fill="#fff"/>' +
+          '<g class="hl-move"><rect x="-520" y="-102" width="1040" height="422" fill="url(#hlHole)" clip-path="url(#hlCut)"/></g>' +
+        '</mask></defs>' +
+        '<rect class="hl-dark" width="100%" height="100%" mask="url(#hlMask)"/>' +
+        '<g class="hl-move"><rect x="-520" y="-102" width="1040" height="422" fill="url(#hlWarm)" clip-path="url(#hlCut)"/>' +
+          '<path class="hl-line" d="M-330 -40L-40 -40L150 -91"/></g>' +
+        '</svg>';
+      lamp = wrap.firstChild;
       document.body.appendChild(lamp);
-      var aim = function (e) {
-        lamp.style.setProperty('--hx', e.clientX + 'px');
-        lamp.style.setProperty('--hy', e.clientY + 'px');
-      };
-      addEventListener('pointermove', aim, { passive: true });
-      addEventListener('pointerdown', aim, { passive: true });
+      addEventListener('pointermove', function (e) { aim(e.clientX, e.clientY); }, { passive: true });
+      addEventListener('pointerdown', function (e) { aim(e.clientX, e.clientY); }, { passive: true });
+      addEventListener('touchmove', function (e) { var t = e.touches[0]; if (t) aim(t.clientX, t.clientY); }, { passive: true });
+      placeBeam();
       lamp.getBoundingClientRect();       // 先渲染一次，渐显动画才会生效
     }
     lamp.classList.toggle('on', on);
     root.classList.toggle('lights-on', on);
-    showToast(on ? E.lightsOn : E.lightsOff, on ? 3200 : 1600);
+    showToast(on ? (touch && E.lightsOnTouch ? E.lightsOnTouch : E.lightsOn) : E.lightsOff, on ? 3600 : 1600);
   }
 
-  // 5. 直接在页面上敲 1 1 2
-  var KONAMI = 'ArrowUp ArrowUp ArrowDown ArrowDown ArrowLeft ArrowRight ArrowLeft ArrowRight b a', keys = [];
+  // 键盘和手势共用一个记录：方向（U D L R）、单指轻点（1）、两指轻点（2）、字母
+  var seq = [], lastAt = 0;
+  function record(tok) {
+    var now = Date.now();
+    if (now - lastAt > 3000) seq = [];
+    lastAt = now;
+    seq.push(tok); if (seq.length > 10) seq.shift();
+    var str = seq.join(' ');
+    var lit = root.classList.contains('lights-on');
+    if (E.lightsOn && (/U U D D L R L R b a$/.test(str) || /U U D D L R L R 1 1$/.test(str))) { seq = []; lights(!lit); return; }
+    if (tok === '2' && lit) { seq = []; lights(false); return; }
+    if (E.e112 && /(^| )1 1 2$/.test(str)) { seq = []; showToast(E.e112, 4500); }
+  }
+
+  // 5. 112：电脑上直接敲 1 1 2；手机上单指点、单指点、两指点
+  var ARROWS = { ArrowUp: 'U', ArrowDown: 'D', ArrowLeft: 'L', ArrowRight: 'R' };
   document.addEventListener('keydown', function (e) {
     var t = e.target;
     if (e.ctrlKey || e.metaKey || e.altKey || (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)))) return;
     if (e.key === 'Escape' && root.classList.contains('lights-on')) { lights(false); return; }
-    keys.push(e.key.length === 1 ? e.key.toLowerCase() : e.key);
-    if (keys.length > 10) keys.shift();
-    if (E.lightsOn && keys.join(' ') === KONAMI) { keys = []; lights(!root.classList.contains('lights-on')); return; }
-    if (E.e112 && keys.slice(-3).join('') === '112') { keys = []; showToast(E.e112, 4500); }
+    if (ARROWS[e.key]) record(ARROWS[e.key]);
+    else if (e.key === '1' || e.key === '2') record(e.key);
+    else if (e.key.length === 1) record(e.key.toLowerCase());
   });
 
-  // 3. 快速连续点击头像或 logo 5 次：随机一句话（不和上一句重复）
+  // 手势：一次触摸结束时判断是划动（方向）还是轻点（几根手指）
+  var g = null;
+  document.addEventListener('touchstart', function (e) {
+    var t = e.touches[0];
+    if (!g) g = { x: t.clientX, y: t.clientY, at: Date.now(), fingers: 0, moved: 0 };
+    g.fingers = Math.max(g.fingers, e.touches.length);
+  }, { passive: true });
+  document.addEventListener('touchmove', function (e) {
+    if (!g) return;
+    var t = e.touches[0];
+    g.moved = Math.max(g.moved, Math.abs(t.clientX - g.x) + Math.abs(t.clientY - g.y));
+    g.ex = t.clientX; g.ey = t.clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (!g || e.touches.length) return;
+    var d = g, dt = Date.now() - d.at; g = null;
+    if (d.fingers === 1 && d.ex != null) {
+      var dx = d.ex - d.x, dy = d.ey - d.y;
+      if (Math.max(Math.abs(dx), Math.abs(dy)) > 40 && dt < 800) {
+        record(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'R' : 'L') : (dy > 0 ? 'D' : 'U'));
+        return;
+      }
+    }
+    if (d.moved < 12 && dt < 350 && d.fingers <= 2) record(String(d.fingers));
+  }, { passive: true });
+  document.addEventListener('touchcancel', function () { g = null; }, { passive: true });
+
+  // 3. 快速连续点击头像或 logo 5 次：随机一句话（不和上一句重复；手机上还会出现手势提示）
   var clicks = 0, clickTimer, lastLine = -1;
   function tap() {
     clicks++;
     clearTimeout(clickTimer); clickTimer = setTimeout(function () { clicks = 0; }, 900);
-    if (clicks < 5 || !E.clicks || !E.clicks.length) return;
+    var lines = (E.clicks || []).concat(touch && E.touchHints ? E.touchHints : []);
+    if (clicks < 5 || !lines.length) return;
     clicks = 0;
     var i;
-    do { i = Math.floor(Math.random() * E.clicks.length); } while (E.clicks.length > 1 && i === lastLine);
+    do { i = Math.floor(Math.random() * lines.length); } while (lines.length > 1 && i === lastLine);
     lastLine = i;
-    showToast(E.clicks[i], 2800);
+    showToast(lines[i], 3200);
   }
   [$('#portrait'), $('.brand-logo')].forEach(function (el) { if (el) el.addEventListener('click', tap); });
 

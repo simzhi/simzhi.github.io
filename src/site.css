@@ -577,32 +577,34 @@ html[lang^="zh"] .case h1 { letter-spacing: 0; }
 /* =====================================================
    彩蛋（逻辑在 site.js 末尾，文字在 content.js 的 eggs）
    ===================================================== */
-/* 车灯模式：↑↑↓↓←→←→BA。整页变暗，只有鼠标位置的一束暖光照亮内容 */
+/* 车灯模式：整页变暗，只剩一束近光灯光型（形状在 site.js 里画：左侧水平截止线、右侧 15° 上扬） */
 .headlights {
-  position: fixed; inset: 0; z-index: 68; pointer-events: none; opacity: 0;
+  position: fixed; inset: 0; width: 100%; height: 100%; z-index: 68; pointer-events: none; opacity: 0;
   transition: opacity .6s var(--ease);
-  background:
-    radial-gradient(240px 150px at var(--hx, 50%) var(--hy, 45%), rgba(255, 238, 196, .16), transparent 70%),
-    radial-gradient(300px 190px at var(--hx, 50%) var(--hy, 45%), transparent 0, transparent 50%, rgba(3, 4, 8, .94) 100%);
 }
 .headlights.on { opacity: 1; }
+.headlights .hl-dark { fill: rgba(3, 4, 8, .94); }
+.headlights .hl-line { fill: none; stroke: #fff4d8; stroke-opacity: .18; stroke-width: 1.2; }
 html.lights-on { cursor: crosshair; }
 
-/* 404：一盏车灯，灯光照着“404” */
+/* 404：一盏现代 LED 大灯。日行灯先亮，近光“打不着”闪两下再亮起，光束带明暗截止线 */
 .lost { --beam: #ffd98a; }
-.lost .lamp { display: block; width: min(260px, 70%); height: auto; margin: 0 0 4px -6px; overflow: visible; }
-.lost .lamp stop:first-child { stop-color: var(--beam); stop-opacity: .55; }
-.lost .lamp stop:last-child  { stop-color: var(--beam); stop-opacity: 0; }
-.lost .beam { fill: url(#beamFade); fill-opacity: .5; transform-origin: 58px 40px; animation: lamp-on 1.6s steps(1, end) .3s both, beam-sway 6s ease-in-out 2s infinite; }
-.lost .beam-core { fill: url(#beamFade); transform-origin: 58px 40px; animation: lamp-on 1.6s steps(1, end) .3s both, beam-sway 6s ease-in-out 2s infinite; }
-.lost .housing { fill: color-mix(in srgb, var(--text) 82%, transparent); }
-.lost .bulb { fill: var(--beam); animation: lamp-on 1.6s steps(1, end) .3s both; }
+.lost .lamp { display: block; width: min(380px, 100%); height: auto; margin: -6px 0 6px -10px; overflow: visible; }
+.lost .lamp .b0 { stop-color: var(--beam); stop-opacity: .7; }
+.lost .lamp .b1 { stop-color: var(--beam); stop-opacity: .28; }
+.lost .lamp .b2 { stop-color: var(--beam); stop-opacity: 0; }
+.lost .shell { fill: url(#hlShell); }
+.lost .rim { fill: none; stroke: url(#hlChrome); stroke-width: 2.2; }
+.lost .amber { fill: none; stroke: #b86a12; stroke-width: 3; stroke-linecap: round; opacity: .55; }
+.lost .drl { fill: none; stroke: #f2f8ff; stroke-width: 3.2; stroke-linecap: round; animation: drl-on .8s var(--ease) .2s both; }
+.lost .beam { fill: url(#hlBeam); transform-origin: 72px 71px; animation: lamp-on 1.6s steps(1, end) 1s both, beam-sway 7s ease-in-out 3s infinite; }
+.lost .lit, .lost .bloom { animation: lamp-on 1.6s steps(1, end) 1s both; }
 .lost h1 {
   display: inline-block; font-size: clamp(64px, 12vw, 104px); line-height: 1;
   background: linear-gradient(90deg, var(--beam), var(--accent) 55%, var(--accent-2));
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 [data-theme="light"] .lost { --beam: #e8940c; }
-/* 灯“打不着”闪两下再亮起来 */
+@keyframes drl-on { from { opacity: 0; } to { opacity: 1; } }
 @keyframes lamp-on { 0% { opacity: 0; } 12% { opacity: 1; } 20% { opacity: .1; } 32% { opacity: 1; } 40% { opacity: .2; } 55%, 100% { opacity: 1; } }
-@keyframes beam-sway { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-4deg); } }
+@keyframes beam-sway { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-2.5deg); } }

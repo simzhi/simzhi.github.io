@@ -161,9 +161,11 @@ window.SITE = {
   /* ---------------- 彩蛋（藏起来的小惊喜） ----------------
      • console：打开浏览器开发者工具（F12）时，控制台里的问候
      • lightsOn / lightsOff：在键盘上按 ↑↑↓↓←→←→BA，开 / 关“车灯模式”
+       （手机：在页面上划 ↑↑↓↓←→←→ 再点两下；lightsOnTouch 是手机上的提示）
      • clicks：连续快速点击头像或左上角 logo 5 次，随机显示其中一句
+     • touchHints：手机上点 5 次时也可能出现的手势提示
      • theme：短时间内连续切换明暗主题很多次
-     • e112：在页面上直接敲 1 1 2（欧洲急救电话）                       */
+     • e112：在页面上直接敲 1 1 2（欧洲急救电话）；手机：点、点、两指点                       */
   eggs: {
     console: {
       en: "Hi, curious person 👋 Since you've opened DevTools anyway, you might as well get in touch.\nPsst: try ↑ ↑ ↓ ↓ ← → ← → B A",
@@ -171,11 +173,18 @@ window.SITE = {
       zh: "你好，好奇的朋友 👋 既然你都打开开发者工具了，不如直接联系我吧。\n悄悄告诉你：试试 ↑ ↑ ↓ ↓ ← → ← → B A"
     },
     lightsOn:  { en: "💡 Headlights on. Press Esc to switch them off.", de: "💡 Scheinwerfer an. Mit Esc wieder aus.", zh: "💡 车灯已打开，按 Esc 关闭。" },
+    lightsOnTouch: { en: "💡 Headlights on. Tap with two fingers to switch them off.", de: "💡 Scheinwerfer an. Mit zwei Fingern tippen zum Ausschalten.", zh: "💡 车灯已打开，两指轻点关闭。" },
     lightsOff: { en: "Headlights off.", de: "Scheinwerfer aus.", zh: "车灯已关闭。" },
     clicks: {
       en: ["You found an easter egg 🥚", "Servus from Munich! 🥨", "Fun fact: my career started in automotive lighting.", "I speak three languages, and JavaScript.", "Still clicking? Just send me an email 😄"],
       de: ["Du hast ein Osterei gefunden 🥚", "Servus aus München! 🥨", "Fun Fact: Angefangen habe ich in der Fahrzeugbeleuchtung.", "Ich spreche drei Sprachen – und JavaScript.", "Immer noch am Klicken? Schreib mir lieber eine Mail 😄"],
       zh: ["你发现了一个彩蛋 🥚", "来自慕尼黑的问候：Servus! 🥨", "冷知识：我的职业生涯是从汽车车灯开始的。", "我会三种语言，外加 JavaScript。", "还在点？不如直接给我发封邮件 😄"]
+    },
+    /* 只在手机 / 平板上出现：和 clicks 混在一起随机显示，提示手机上的手势 */
+    touchHints: {
+      en: ["Psst: swipe ↑ ↑ ↓ ↓ ← → ← →, then tap twice 💡", "Psst: tap, tap, then tap with two fingers 🚨"],
+      de: ["Psst: wische ↑ ↑ ↓ ↓ ← → ← →, dann zweimal tippen 💡", "Psst: tippen, tippen, dann mit zwei Fingern tippen 🚨"],
+      zh: ["悄悄告诉你：在页面上划 ↑ ↑ ↓ ↓ ← → ← →，再点两下 💡", "悄悄告诉你：点一下、点一下，再两指轻点 🚨"]
     },
     theme: { en: "Light, dark, light, dark… are your eyes OK? 😎", de: "Hell, dunkel, hell, dunkel … alles gut mit den Augen? 😎", zh: "亮、暗、亮、暗……眼睛还好吗？😎" },
     e112: {

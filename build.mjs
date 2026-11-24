@@ -483,6 +483,41 @@ for (const p of legalPages) {
   }));
 }
 
+/* 404 页面的车灯：现代 LED 大灯（掠角灯壳、镀铬饰圈、透镜式近光、远光模组、日行灯导光条、转向灯），
+   近光光束带明暗截止线（右侧 15° 上扬）。动画在 site.css 末尾。 */
+const headlamp = `<svg class="lamp" viewBox="0 0 380 140" aria-hidden="true">
+        <defs>
+          <linearGradient id="hlBeam" x1="70" y1="0" x2="380" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" class="b0"/><stop offset=".35" class="b1"/><stop offset=".85" class="b2"/></linearGradient>
+          <linearGradient id="hlShell" x1="0" y1="20" x2="0" y2="112" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4a505b"/><stop offset=".5" stop-color="#1c2027"/><stop offset="1" stop-color="#0b0d11"/></linearGradient>
+          <linearGradient id="hlChrome" x1="20" y1="20" x2="190" y2="110" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4f6f8"/><stop offset=".35" stop-color="#8c939d"/><stop offset=".55" stop-color="#e3e6ea"/><stop offset="1" stop-color="#5d636c"/></linearGradient>
+          <radialGradient id="hlGlass" cx=".38" cy=".35" r=".75"><stop offset="0" stop-color="#5b6675"/><stop offset=".6" stop-color="#1a1f27"/><stop offset="1" stop-color="#07090c"/></radialGradient>
+          <radialGradient id="hlLit" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fffdf6"/><stop offset=".45" stop-color="#fff1cc"/><stop offset="1" stop-color="#ffe3a0" stop-opacity="0"/></radialGradient>
+          <radialGradient id="hlBloom" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff6dc" stop-opacity=".9"/><stop offset="1" stop-color="#ffe2a0" stop-opacity="0"/></radialGradient>
+          <filter id="hlSoft" x="-10%" y="-40%" width="120%" height="180%"><feGaussianBlur stdDeviation="2.2"/></filter>
+          <filter id="hlGlow" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="2.6" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <clipPath id="hlInner"><path d="M29 79C28 57 51 40 93 36L168 32C180 32 183 40 177 49C158 75 117 97 67 100C42 102 30 93 29 79Z"/></clipPath>
+        </defs>
+        <g class="beam"><path filter="url(#hlSoft)" d="M72 64L250 64L380 30L380 140L72 78Z"/></g>
+        <path class="shell" d="M18 79C16 51 44 30 92 26L172 22C191 21 197 35 187 49C167 79 121 105 66 109C36 111 20 99 18 79Z"/>
+        <path class="rim" d="M18 79C16 51 44 30 92 26L172 22C191 21 197 35 187 49C167 79 121 105 66 109C36 111 20 99 18 79Z"/>
+        <g clip-path="url(#hlInner)">
+          <rect x="20" y="20" width="180" height="90" fill="#090b0f"/>
+          <path d="M20 66C60 52 120 40 200 34L200 20L20 20Z" fill="#fff" opacity=".05"/>
+          <path class="amber" d="M98 41L166 37"/>
+          <circle cx="70" cy="71" r="22" fill="url(#hlChrome)"/>
+          <circle cx="70" cy="71" r="17.5" fill="#0d1015"/>
+          <circle cx="70" cy="71" r="15" fill="url(#hlGlass)"/>
+          <circle class="lit" cx="70" cy="71" r="15" fill="url(#hlLit)"/>
+          <ellipse cx="64" cy="64" rx="5" ry="3" fill="#fff" opacity=".55" transform="rotate(-30 64 64)"/>
+          <circle cx="122" cy="56" r="13" fill="url(#hlChrome)" opacity=".85"/>
+          <circle cx="122" cy="56" r="10" fill="url(#hlGlass)"/>
+          <circle cx="119" cy="52" r="2.4" fill="#fff" opacity=".45"/>
+        </g>
+        <path class="drl" filter="url(#hlGlow)" d="M40 96C86 96 138 78 172 47"/>
+        <path d="M30 60C44 42 70 33 100 31" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1.5" stroke-linecap="round"/>
+        <circle class="bloom" cx="70" cy="71" r="34" fill="url(#hlBloom)"/>
+      </svg>`;
+
 /* ---------- 404（三语） ---------- */
 write('404.html', simplePage({
   l: 'en',
@@ -490,13 +525,7 @@ write('404.html', simplePage({
   description: uiPlain('en', '404.text'),
   noindex: true,
   body: `    <article class="glass lost">
-      <svg class="lamp" viewBox="0 0 220 80" aria-hidden="true">
-        <defs><linearGradient id="beamFade" x1="0" x2="1" y1="0" y2="0"><stop offset="0"/><stop offset="1"/></linearGradient></defs>
-        <path class="beam" d="M58 26 L220 2 L220 78 L58 54 Z"/>
-        <path class="beam-core" d="M58 32 L220 24 L220 56 L58 48 Z"/>
-        <path class="housing" d="M14 16 h30 a16 16 0 0 1 16 16 v16 a16 16 0 0 1 -16 16 h-30 a8 8 0 0 1 -8 -8 v-32 a8 8 0 0 1 8 -8 z"/>
-        <circle class="bulb" cx="40" cy="40" r="9"/>
-      </svg>
+${headlamp}
       <h1>404</h1>
 ${LANGS.map((l) => `      <section lang="${HTML_LANG[l]}">
         <h2>${ui(l, '404.title')}</h2>
