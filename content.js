@@ -200,9 +200,9 @@ window.SITE = {
     lightsOnTouch: { en: "💡 Headlights on. Tap with two fingers to switch them off.", de: "💡 Scheinwerfer an. Mit zwei Fingern tippen zum Ausschalten.", zh: "💡 车灯已打开，两指轻点关闭。" },
     lightsOff: { en: "Headlights off.", de: "Scheinwerfer aus.", zh: "车灯已关闭。" },
     clicks: {
-      en: ["You found an easter egg 🥚", "Servus from Munich! 🥨", "Fun fact: my career started in automotive lighting.", "I speak three languages, and JavaScript.", "Still clicking? Just send me an email 😄"],
-      de: ["Du hast ein Osterei gefunden 🥚", "Servus aus München! 🥨", "Fun Fact: Angefangen habe ich in der Fahrzeugbeleuchtung.", "Ich spreche drei Sprachen – und JavaScript.", "Immer noch am Klicken? Schreib mir lieber eine Mail 😄"],
-      zh: ["你发现了一个彩蛋 🥚", "来自慕尼黑的问候：Servus! 🥨", "冷知识：我的职业生涯是从汽车车灯开始的。", "我会三种语言，外加 JavaScript。", "还在点？不如直接给我发封邮件 😄"]
+      en: ["You found an easter egg 🥚", "Servus from Munich! 🥨", "Fun fact: my career started in automotive lighting.", "Customers speak German, developers speak English. I make sure they understand each other.", "Still clicking? Just send me an email 😄"],
+      de: ["Du hast ein Osterei gefunden 🥚", "Servus aus München! 🥨", "Fun Fact: Angefangen habe ich in der Fahrzeugbeleuchtung.", "Kunden sprechen Deutsch, Entwickler Englisch – ich sorge dafür, dass sie sich verstehen.", "Immer noch am Klicken? Schreib mir lieber eine Mail 😄"],
+      zh: ["你发现了一个彩蛋 🥚", "来自慕尼黑的问候：Servus! 🥨", "冷知识：我的职业生涯是从汽车车灯开始的。", "客户说德语，开发说英语，我负责让他们说同一种话。", "还在点？不如直接给我发封邮件 😄"]
     },
     /* 只在手机 / 平板上出现：和 clicks 混在一起随机显示，提示手机上的手势 */
     touchHints: {
