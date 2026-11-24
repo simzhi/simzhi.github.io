@@ -325,7 +325,7 @@
 
   // 2. 车灯模式：整页变暗，只剩一束近光灯的光型（明暗截止线：左侧水平、右侧 15° 上扬），跟着鼠标 / 手指走
   //    电脑：↑↑↓↓←→←→BA 打开，Esc 或再输一次关闭
-  //    手机：在页面上划 ↑↑↓↓←→←→，再点两下打开；两指轻点关闭
+  //    手机：两根手指按住约 0.6 秒开 / 关；或者在页面上划 ↑↑↓↓←→←→，再点两下打开；两指轻点关闭
   var touch = matchMedia('(pointer: coarse)').matches;   // 主要用手指操作的设备：提示文字换成手势说明
   var lamp = null, aimX = innerWidth / 2, aimY = innerHeight * 0.45, aimQueued = false;
   var SVGNS = 'http://www.w3.org/2000/svg';
@@ -415,21 +415,36 @@
   });
 
   // 手势：一次触摸结束时判断是划动（方向）还是轻点（几根手指）
-  var g = null;
+  // 简单方式：两根手指按住不动约 0.6 秒，开 / 关车灯
+  var g = null, holdT = null;
+  function cancelHold() { clearTimeout(holdT); holdT = null; }
   document.addEventListener('touchstart', function (e) {
     var t = e.touches[0];
     if (!g) g = { x: t.clientX, y: t.clientY, at: Date.now(), fingers: 0, moved: 0 };
     g.fingers = Math.max(g.fingers, e.touches.length);
+    cancelHold();
+    if (e.touches.length === 2 && E.lightsOn) {
+      var cur = g;
+      holdT = setTimeout(function () {
+        holdT = null;
+        if (g !== cur || cur.moved > 12) return;
+        cur.used = true; seq = [];
+        lights(!root.classList.contains('lights-on'));
+      }, 600);
+    }
   }, { passive: true });
   document.addEventListener('touchmove', function (e) {
     if (!g) return;
     var t = e.touches[0];
     g.moved = Math.max(g.moved, Math.abs(t.clientX - g.x) + Math.abs(t.clientY - g.y));
     g.ex = t.clientX; g.ey = t.clientY;
+    if (g.moved > 12) cancelHold();
   }, { passive: true });
   document.addEventListener('touchend', function (e) {
+    if (e.touches.length < 2) cancelHold();
     if (!g || e.touches.length) return;
     var d = g, dt = Date.now() - d.at; g = null;
+    if (d.used) return;
     if (d.fingers === 1 && d.ex != null) {
       var dx = d.ex - d.x, dy = d.ey - d.y;
       if (Math.max(Math.abs(dx), Math.abs(dy)) > 40 && dt < 800) {
@@ -439,7 +454,7 @@
     }
     if (d.moved < 12 && dt < 350 && d.fingers <= 2) record(String(d.fingers));
   }, { passive: true });
-  document.addEventListener('touchcancel', function () { g = null; }, { passive: true });
+  document.addEventListener('touchcancel', function () { g = null; cancelHold(); }, { passive: true });
 
   // 3. 快速连续点击头像或 logo 5 次：随机一句话（不和上一句重复；手机上还会出现手势提示）
   var clicks = 0, clickTimer, lastLine = -1;

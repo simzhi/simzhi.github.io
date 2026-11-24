@@ -186,7 +186,7 @@ window.SITE = {
   /* ---------------- 彩蛋（藏起来的小惊喜） ----------------
      • console：打开浏览器开发者工具（F12）时，控制台里的问候
      • lightsOn / lightsOff：在键盘上按 ↑↑↓↓←→←→BA，开 / 关“车灯模式”
-       （手机：在页面上划 ↑↑↓↓←→←→ 再点两下；lightsOnTouch 是手机上的提示）
+       （手机：两指按住约 0.6 秒；或在页面上划 ↑↑↓↓←→←→ 再点两下；lightsOnTouch 是手机上的提示）
      • clicks：连续快速点击头像或左上角 logo 5 次，随机显示其中一句
      • touchHints：手机上点 5 次时也可能出现的手势提示
      • e112：在页面上直接敲 1 1 2（欧洲急救电话）；手机：点、点、两指点                       */
@@ -206,9 +206,9 @@ window.SITE = {
     },
     /* 只在手机 / 平板上出现：和 clicks 混在一起随机显示，提示手机上的手势 */
     touchHints: {
-      en: ["Psst: swipe ↑ ↑ ↓ ↓ ← → ← →, then tap twice 💡", "Psst: tap, tap, then tap with two fingers 🚨", "Psst: press and hold my photo 📟"],
-      de: ["Psst: wische ↑ ↑ ↓ ↓ ← → ← →, dann zweimal tippen 💡", "Psst: tippen, tippen, dann mit zwei Fingern tippen 🚨", "Psst: halte mein Foto gedrückt 📟"],
-      zh: ["悄悄告诉你：在页面上划 ↑ ↑ ↓ ↓ ← → ← →，再点两下 💡", "悄悄告诉你：点一下、点一下，再两指轻点 🚨", "悄悄告诉你：长按我的照片 📟"]
+      en: ["Psst: hold two fingers on the page for a moment 💡", "Psst: tap, tap, then tap with two fingers 🚨", "Psst: press and hold my photo 📟"],
+      de: ["Psst: halte kurz zwei Finger auf die Seite 💡", "Psst: tippen, tippen, dann mit zwei Fingern tippen 🚨", "Psst: halte mein Foto gedrückt 📟"],
+      zh: ["悄悄告诉你：两根手指在页面上按住一会儿 💡", "悄悄告诉你：点一下、点一下，再两指轻点 🚨", "悄悄告诉你：长按我的照片 📟"]
     },
     /* 车辆状态（FMS，德国救援车辆的状态码 0–9）：
        电脑上直接按数字键；也可以长按头像（手机）或按 S 键打开状态面板。按 5（Sprechwunsch）会跳到联系方式。
