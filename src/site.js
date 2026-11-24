@@ -363,7 +363,12 @@
       document.body.appendChild(lamp);
       addEventListener('pointermove', function (e) { aim(e.clientX, e.clientY); }, { passive: true });
       addEventListener('pointerdown', function (e) { aim(e.clientX, e.clientY); }, { passive: true });
-      addEventListener('touchmove', function (e) { var t = e.touches[0]; if (t) aim(t.clientX, t.clientY); }, { passive: true });
+      // 车灯打开时，单指拖动只移动光束，不滚动页面（passive: false 才能阻止滚动）
+      addEventListener('touchmove', function (e) {
+        if (!root.classList.contains('lights-on')) return;
+        var t = e.touches[0]; if (t) aim(t.clientX, t.clientY);
+        if (e.cancelable) e.preventDefault();
+      }, { passive: false });
       placeBeam();
       lamp.getBoundingClientRect();       // 先渲染一次，渐显动画才会生效
     }

@@ -585,7 +585,8 @@ html[lang^="zh"] .case h1 { letter-spacing: 0; }
 .headlights.on { opacity: 1; }
 .headlights .hl-dark { fill: rgba(3, 4, 8, .94); }
 .headlights .hl-line { fill: none; stroke: #fff4d8; stroke-opacity: .18; stroke-width: 1.2; }
-html.lights-on { cursor: crosshair; }
+html.lights-on { cursor: crosshair; touch-action: none; overscroll-behavior: none; }
+html.lights-on body { touch-action: none; }
 
 /* 404：Leitstelle（调度中心）风格的警情界面。地图在两种主题下都保持深色，像真实的调度大屏 */
 .page article.dispatch { max-width: 980px; padding: 0; overflow: hidden; --alert: #ff453a; --blue: #0a84ff; }
