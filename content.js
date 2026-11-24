@@ -110,7 +110,7 @@ window.SITE = {
     "contact.place":     { en: "Munich, Germany", de: "München, Deutschland", zh: "德国 · 慕尼黑" },
     "contact.country":   { en: "Germany",        de: "Deutschland",          zh: "德国" },
     "contact.map":       { en: "Open in Maps ›", de: "In Karte öffnen ›",    zh: "在地图中打开 ›" },
-    "toast.copied":      { en: "✓ Email copied", de: "✓ E-Mail kopiert",     zh: "✓ 邮箱已复制" },
+    "toast.copied":      { en: "✓ Email copied · request to talk logged", de: "✓ E-Mail kopiert · Sprechwunsch registriert", zh: "✓ 邮箱已复制 · 通话请求已登记" },
 
     /* 项目案例（内容在 cases.js） */
     "nav.work":         { en: "Work",         de: "Projekte",            zh: "项目" },
@@ -193,8 +193,8 @@ window.SITE = {
      • e112：在页面上直接敲 1 1 2（欧洲急救电话）；手机：点、点、两指点                       */
   eggs: {
     console: {
-      en: "Hi, curious person 👋 Since you've opened DevTools anyway, you might as well get in touch.\nPsst: try ↑ ↑ ↓ ↓ ← → ← → B A",
-      de: "Hallo, neugierige Person 👋 Wenn du schon die DevTools offen hast, kannst du dich auch gleich melden.\nPsst: probier mal ↑ ↑ ↓ ↓ ← → ← → B A",
+      en: "Hi, curious person 👋 Since you've opened DevTools anyway, you might as well get in touch.\nPsst: try ↑ ↑ ↓ ↓ ← → ← → B A, or the number keys 0–9.",
+      de: "Hallo, neugierige Person 👋 Wenn du schon die DevTools offen hast, kannst du dich auch gleich melden.\nPsst: probier mal ↑ ↑ ↓ ↓ ← → ← → B A – oder die Zifferntasten 0–9.",
       zh: "你好，好奇的朋友 👋 既然你都打开开发者工具了，不如直接联系我吧。\n悄悄告诉你：试试 ↑ ↑ ↓ ↓ ← → ← → B A"
     },
     lightsOn:  { en: "💡 Headlights on. Press Esc to switch them off.", de: "💡 Scheinwerfer an. Mit Esc wieder aus.", zh: "💡 车灯已打开，按 Esc 关闭。" },
@@ -207,10 +207,55 @@ window.SITE = {
     },
     /* 只在手机 / 平板上出现：和 clicks 混在一起随机显示，提示手机上的手势 */
     touchHints: {
-      en: ["Psst: swipe ↑ ↑ ↓ ↓ ← → ← →, then tap twice 💡", "Psst: tap, tap, then tap with two fingers 🚨"],
-      de: ["Psst: wische ↑ ↑ ↓ ↓ ← → ← →, dann zweimal tippen 💡", "Psst: tippen, tippen, dann mit zwei Fingern tippen 🚨"],
-      zh: ["悄悄告诉你：在页面上划 ↑ ↑ ↓ ↓ ← → ← →，再点两下 💡", "悄悄告诉你：点一下、点一下，再两指轻点 🚨"]
+      en: ["Psst: swipe ↑ ↑ ↓ ↓ ← → ← →, then tap twice 💡", "Psst: tap, tap, then tap with two fingers 🚨", "Psst: press and hold my photo 📟"],
+      de: ["Psst: wische ↑ ↑ ↓ ↓ ← → ← →, dann zweimal tippen 💡", "Psst: tippen, tippen, dann mit zwei Fingern tippen 🚨", "Psst: halte mein Foto gedrückt 📟"],
+      zh: ["悄悄告诉你：在页面上划 ↑ ↑ ↓ ↓ ← → ← →，再点两下 💡", "悄悄告诉你：点一下、点一下，再两指轻点 🚨", "悄悄告诉你：长按我的照片 📟"]
     },
+    /* 车辆状态（FMS，德国救援车辆的状态码 0–9）：
+       电脑上直接按数字键；也可以长按头像（手机）或按 S 键打开状态面板。按 5（Sprechwunsch）会跳到联系方式。
+       每一项是 [面板上的短名称, 弹出的话]                                                        */
+    fms: {
+      title:  { en: "Vehicle status (FMS)", de: "Fahrzeugstatus (FMS)", zh: "车辆状态（FMS）" },
+      prompt: { en: "Choose a status", de: "Status wählen", zh: "请选择状态" },
+      close:  { en: "Close", de: "Schließen", zh: "关闭" },
+      status: {
+        en: [["Priority call", "Status 0 · Priority call. In a real emergency, please dial 112."],
+             ["On radio", "Status 1 · Available on radio, and on LinkedIn."],
+             ["At station", "Status 2 · Available at station, near Munich."],
+             ["Job accepted", "Status 3 · Job accepted. On my way."],
+             ["On scene", "Status 4 · On scene: you're reading my website."],
+             ["Request to talk", "Status 5 · Request to talk. Patching you through to contact…"],
+             ["Out of service", "Status 6 · Out of service. Even dispatchers need coffee ☕"],
+             ["Patient on board", "Status 7 · Patient on board. Don't worry, it's only a bug 🐞"],
+             ["At destination", "Status 8 · At destination. Thanks for riding along!"],
+             ["Guest unit", "Status 9 · Guest unit signed on. Welcome, visitor!"]],
+        de: [["Prio-Sprechwunsch", "Status 0 · Priorisierter Sprechwunsch. Im echten Notfall bitte 112 wählen."],
+             ["Frei über Funk", "Status 1 · Einsatzbereit über Funk – und auf LinkedIn."],
+             ["Frei auf Wache", "Status 2 · Einsatzbereit auf Wache, bei München."],
+             ["Einsatz übernommen", "Status 3 · Einsatz übernommen. Bin unterwegs."],
+             ["Am Einsatzort", "Status 4 · Am Einsatzort: Du liest gerade meine Website."],
+             ["Sprechwunsch", "Status 5 · Sprechwunsch. Ich verbinde zum Kontakt …"],
+             ["Nicht einsatzbereit", "Status 6 · Nicht einsatzbereit. Auch Disponenten brauchen Kaffee ☕"],
+             ["Patient aufgenommen", "Status 7 · Patient aufgenommen. Keine Sorge, nur ein Bug 🐞"],
+             ["Am Transportziel", "Status 8 · Am Transportziel. Danke fürs Mitfahren!"],
+             ["Fremdanmeldung", "Status 9 · Fremdanmeldung. Willkommen, Besucher!"]],
+        zh: [["优先通话", "状态 0 · 优先通话请求。真有紧急情况，请拨打 112。"],
+             ["电台待命", "状态 1 · 电台待命，LinkedIn 上也在线。"],
+             ["在站待命", "状态 2 · 在站待命，就在慕尼黑附近。"],
+             ["接受任务", "状态 3 · 接受任务，正在路上。"],
+             ["已到现场", "状态 4 · 已到现场：你正在看我的网站。"],
+             ["请求通话", "状态 5 · 请求通话，正在为你转接联系方式……"],
+             ["暂停服务", "状态 6 · 暂停服务。调度员也需要咖啡 ☕"],
+             ["病人已上车", "状态 7 · 病人已上车。别担心，只是一个 bug 🐞"],
+             ["到达目的地", "状态 8 · 到达目的地。谢谢一路同行！"],
+             ["外来车辆", "状态 9 · 外来车辆登录。欢迎你，访客！"]]
+      }
+    },
+    /* 导航栏的进度条上有一辆小车，滚到页面最底部时显示 */
+    arrived: { en: "🚑 Status 4 · On scene. You made it to the end!", de: "🚑 Status 4 · Am Einsatzort. Du hast es bis ans Ende geschafft!", zh: "🚑 状态 4 · 已到现场。你看到最后啦！" },
+    /* 切到别的标签页时，标签页标题变成 tabAway；切回来时短暂显示 tabBack */
+    tabAway: { en: "🚨 Incident waiting…", de: "🚨 Einsatz wartet …", zh: "🚨 警情待处理……" },
+    tabBack: { en: "Status 2 · Welcome back", de: "Status 2 · Willkommen zurück", zh: "状态 2 · 欢迎回来" },
     theme: { en: "Light, dark, light, dark… are your eyes OK? 😎", de: "Hell, dunkel, hell, dunkel … alles gut mit den Augen? 😎", zh: "亮、暗、亮、暗……眼睛还好吗？😎" },
     e112: {
       en: "🚨 Incident received… but this is just a website. In a real emergency, call 112.",

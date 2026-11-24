@@ -126,6 +126,7 @@ ${links}
     </div>
   </div>
   <span class="progress" id="progress" aria-hidden="true"></span>
+  <span class="unit" id="unit" aria-hidden="true"><svg viewBox="0 0 20 12"><rect class="u-body" x=".5" y="3" width="19" height="8.5" rx="2.2"/><rect class="u-glass" x="13.5" y="4.6" width="4.6" height="3" rx=".8"/><rect class="u-stripe" x="1.5" y="8" width="11.5" height="1.4"/><rect class="u-bl b1" x="4" y=".3" width="3.2" height="2.3" rx=".7"/><rect class="u-bl b2" x="8.4" y=".3" width="3.2" height="2.3" rx=".7"/></svg></span>
 </nav>`;
 }
 
@@ -357,7 +358,9 @@ const pageData = (l, urlOf, extra = {}) => ({
   toast: plain(pick(S.ui['toast.copied'], l)),
   home: Object.fromEntries(LANGS.map((x) => [x, urlOf(x)])),
   hint: Object.fromEntries(LANGS.map((x) => [x, { text: uiPlain(x, 'langhint.text'), go: uiPlain(x, 'langhint.go'), close: uiPlain(x, 'langhint.close') }])),
-  eggs: Object.fromEntries(Object.entries(S.eggs || {}).map(([k, v]) => [k, pick(v, l)])),
+  eggs: Object.fromEntries(Object.entries(S.eggs || {}).map(([k, v]) => [k, k === 'fms'
+    ? Object.fromEntries(Object.entries(v).map(([k2, v2]) => [k2, pick(v2, l)]))
+    : pick(v, l)])),
   ...extra
 });
 const pageEnd = (l, urlOf, data) => `${langDock(l, urlOf)}

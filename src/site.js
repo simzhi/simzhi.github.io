@@ -36,7 +36,9 @@
   var bar = $('#progress'), nav = $('#nav');
   function onScroll() {
     var h = document.documentElement.scrollHeight - innerHeight;
-    if (bar) bar.style.transform = 'scaleX(' + (h > 0 ? Math.min(1, scrollY / h) : 0) + ')';
+    var pr = h > 0 ? Math.min(1, Math.max(0, scrollY / h)) : 0;
+    if (bar) bar.style.transform = 'scaleX(' + pr + ')';
+    if (nav) { nav.style.setProperty('--p', pr); nav.classList.toggle('rolling', pr > 0.005); }
     if (nav) nav.classList.toggle('compact', scrollY > 60);
   }
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
@@ -379,9 +381,10 @@
     seq.push(tok); if (seq.length > 10) seq.shift();
     var str = seq.join(' ');
     var lit = root.classList.contains('lights-on');
-    if (E.lightsOn && (/U U D D L R L R b a$/.test(str) || /U U D D L R L R 1 1$/.test(str))) { seq = []; lights(!lit); return; }
-    if (tok === '2' && lit) { seq = []; lights(false); return; }
-    if (E.e112 && /(^| )1 1 2$/.test(str)) { seq = []; showToast(E.e112, 4500); }
+    if (E.lightsOn && (/U U D D L R L R b a$/.test(str) || /U U D D L R L R 1 1$/.test(str))) { seq = []; lights(!lit); return true; }
+    if (tok === '2' && lit) { seq = []; lights(false); return true; }
+    if (E.e112 && /(^| )1 1 2$/.test(str)) { seq = []; showToast(E.e112, 4500); return true; }
+    return false;
   }
 
   // 5. 112：电脑上直接敲 1 1 2；手机上单指点、单指点、两指点
@@ -389,10 +392,21 @@
   document.addEventListener('keydown', function (e) {
     var t = e.target;
     if (e.ctrlKey || e.metaKey || e.altKey || (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)))) return;
+    if (e.key === 'Escape' && panel && !panel.hidden) { closePanel(); return; }
     if (e.key === 'Escape' && root.classList.contains('lights-on')) { lights(false); return; }
-    if (ARROWS[e.key]) record(ARROWS[e.key]);
-    else if (e.key === '1' || e.key === '2') record(e.key);
-    else if (e.key.length === 1) record(e.key.toLowerCase());
+    clearTimeout(pendingStatus);
+    var fired;
+    if (ARROWS[e.key]) fired = record(ARROWS[e.key]);
+    else if (e.key.length === 1) fired = record(e.key.toLowerCase());
+    if (fired || !E.fms) return;
+    if (/^[0-9]$/.test(e.key)) {
+      var d = +e.key;
+      if (panel && !panel.hidden) { pickStatus(d); return; }
+      // 1 和 2 可能是 112 的开头：稍等一下，确定后面没有接着输入再显示
+      pendingStatus = setTimeout(function () { pickStatus(d); }, d === 1 || d === 2 ? 700 : 0);
+    } else if (e.key === 's' || e.key === 'S') {
+      if (panel && !panel.hidden) closePanel(); else openPanel();
+    }
   });
 
   // 手势：一次触摸结束时判断是划动（方向）还是轻点（几根手指）
@@ -425,6 +439,7 @@
   // 3. 快速连续点击头像或 logo 5 次：随机一句话（不和上一句重复；手机上还会出现手势提示）
   var clicks = 0, clickTimer, lastLine = -1;
   function tap() {
+    if (longFired) { longFired = false; return; }
     clicks++;
     clearTimeout(clickTimer); clickTimer = setTimeout(function () { clicks = 0; }, 900);
     var lines = (E.clicks || []).concat(touch && E.touchHints ? E.touchHints : []);
@@ -444,6 +459,109 @@
     flips = flips.filter(function (x) { return now - x < 8000; }); flips.push(now);
     if (flips.length >= 8) { flips = []; showToast(E.theme, 3000); }
   });
+
+  /* ---------- 调度中心彩蛋：FMS 车辆状态（数字键 0–9 / 状态面板） ---------- */
+  var F = E.fms || null, panel = null, pendingStatus, lastFocus = null;
+  function goContact() {
+    var c = $('#contact');
+    if (c) c.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    else if (P.home && P.lang) location.href = P.home[P.lang] + '#contact';
+  }
+  function pickStatus(d) {
+    if (!F || !F.status || !F.status[d]) return;
+    var msg = F.status[d][1];
+    if (panel && !panel.hidden) {
+      panel.querySelectorAll('.fms-key').forEach(function (b) { b.setAttribute('aria-pressed', +b.dataset.s === d); });
+      panel.querySelector('.fms-d').textContent = d;
+      panel.querySelector('.fms-t').textContent = msg;
+      if (d === 5) setTimeout(function () { closePanel(); goContact(); }, reduce ? 0 : 900);
+      return;
+    }
+    showToast(msg, 3400);
+    if (d === 5) setTimeout(goContact, reduce ? 0 : 500);
+  }
+  function buildPanel() {
+    panel = document.createElement('div');
+    panel.className = 'fms-panel glass'; panel.hidden = true;
+    panel.setAttribute('role', 'dialog'); panel.setAttribute('aria-label', F.title);
+    panel.innerHTML = '<div class="fms-head"><span class="fms-title"></span><button type="button" class="fms-x">×</button></div>' +
+      '<div class="fms-screen" role="status" aria-live="polite"><span class="fms-d">–</span><span class="fms-t"></span></div>' +
+      '<div class="fms-keys"></div>';
+    panel.querySelector('.fms-title').textContent = F.title;
+    panel.querySelector('.fms-t').textContent = F.prompt;
+    var x = panel.querySelector('.fms-x'); x.setAttribute('aria-label', F.close);
+    x.addEventListener('click', closePanel);
+    var keys = panel.querySelector('.fms-keys');
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 0].forEach(function (d) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'fms-key'; b.dataset.s = d; b.setAttribute('aria-pressed', 'false');
+      b.innerHTML = '<b></b><span></span>';
+      b.querySelector('b').textContent = d;
+      b.querySelector('span').textContent = F.status[d][0];
+      b.addEventListener('click', function () { pickStatus(d); });
+      keys.appendChild(b);
+    });
+    document.body.appendChild(panel);
+    document.addEventListener('pointerdown', function (e) {
+      if (!panel.hidden && !panel.contains(e.target) && !(portrait && portrait.contains(e.target))) closePanel();
+    });
+  }
+  function openPanel() {
+    if (!F || !F.status) return;
+    if (!panel) buildPanel();
+    lastFocus = document.activeElement;
+    panel.querySelector('.fms-d').textContent = '–';
+    panel.querySelector('.fms-t').textContent = F.prompt;
+    panel.querySelectorAll('.fms-key').forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+    panel.hidden = false;
+    panel.getBoundingClientRect();
+    panel.classList.add('show');
+    var first = panel.querySelector('.fms-key'); if (first && !touch) first.focus({ preventScroll: true });
+  }
+  function closePanel() {
+    if (!panel || panel.hidden) return;
+    panel.classList.remove('show');
+    setTimeout(function () { if (!panel.classList.contains('show')) panel.hidden = true; }, reduce ? 0 : 250);
+    if (lastFocus && lastFocus.focus && panel.contains(document.activeElement)) lastFocus.focus({ preventScroll: true });
+  }
+
+  // 长按头像（约 0.6 秒）打开状态面板；手机上不弹出“存储图像”菜单
+  var longFired = false, pressT = null, pressAt = null;
+  if (portrait && F) {
+    var pimg = portrait.querySelector('img'); if (pimg) pimg.setAttribute('draggable', 'false');
+    var cancelPress = function () { clearTimeout(pressT); pressT = null; };
+    portrait.addEventListener('pointerdown', function (e) {
+      if (e.button !== 0) return;
+      longFired = false; pressAt = { x: e.clientX, y: e.clientY };
+      cancelPress();
+      pressT = setTimeout(function () { pressT = null; longFired = true; openPanel(); }, 600);
+    });
+    portrait.addEventListener('pointermove', function (e) {
+      if (pressT && pressAt && Math.abs(e.clientX - pressAt.x) + Math.abs(e.clientY - pressAt.y) > 12) cancelPress();
+    });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (t) { portrait.addEventListener(t, cancelPress); });
+    portrait.addEventListener('contextmenu', function (e) { if (longFired || e.pointerType === 'touch' || touch) e.preventDefault(); });
+  }
+
+  // 进度条上的小车：开到页面最底部时提示“已到现场”（每次打开页面只提示一次）
+  var arrivedShown = false, unitEl = $('#unit'), rollT;
+  addEventListener('scroll', function () {
+    if (unitEl) { unitEl.classList.add('moving'); clearTimeout(rollT); rollT = setTimeout(function () { unitEl.classList.remove('moving'); }, 700); }
+    if (arrivedShown || !E.arrived) return;
+    var h = root.scrollHeight - innerHeight;
+    if (h > 400 && scrollY >= h - 4) { arrivedShown = true; showToast(E.arrived, 3200); }
+  }, { passive: true });
+
+  // 切到别的标签页时改标题；切回来时短暂显示“欢迎回来”
+  if (E.tabAway) {
+    var realTitle = document.title, backT;
+    document.addEventListener('visibilitychange', function () {
+      clearTimeout(backT);
+      if (document.hidden) { document.title = E.tabAway; return; }
+      document.title = E.tabBack || realTitle;
+      backT = setTimeout(function () { document.title = realTitle; }, 2500);
+    });
+  }
 
   // 用浏览器“返回”回到本页时（页面从缓存恢复），取消切换语言时的淡出效果
   addEventListener('pageshow', function (e) {
