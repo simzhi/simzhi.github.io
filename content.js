@@ -110,7 +110,7 @@ window.SITE = {
     "contact.place":     { en: "Munich, Germany", de: "München, Deutschland", zh: "德国 · 慕尼黑" },
     "contact.country":   { en: "Germany",        de: "Deutschland",          zh: "德国" },
     "contact.map":       { en: "Open in Maps ›", de: "In Karte öffnen ›",    zh: "在地图中打开 ›" },
-    "toast.copied":      { en: "✓ Email copied", de: "✓ E-Mail kopiert",     zh: "✓ 邮箱已复制" },
+    "toast.copied":      { en: "✓ Email copied · request to talk logged", de: "✓ E-Mail kopiert · Sprechwunsch registriert", zh: "✓ 邮箱已复制 · 通话请求已登记" },
 
     /* 项目案例（内容在 cases.js） */
     "nav.work":         { en: "Work",         de: "Projekte",            zh: "项目" },
@@ -139,10 +139,6 @@ window.SITE = {
     "legal.impressum":   { en: "Imprint",        de: "Impressum",            zh: "Impressum" },
     "legal.privacy":     { en: "Privacy",        de: "Datenschutz",          zh: "隐私声明" },
 
-    /* 404 页面 */
-    "404.title":         { en: "Page not found", de: "Seite nicht gefunden", zh: "页面不存在" },
-    "404.text":          { en: "This page doesn't exist or has moved.", de: "Diese Seite gibt es nicht oder sie wurde verschoben.", zh: "这个页面不存在，或已经移动。" },
-    "404.back":          { en: "Back to home",   de: "Zur Startseite",       zh: "返回首页" },
 
     "footer": {
       en: "© 2026 Zhihao Yang · Designed with care in Munich",
@@ -156,6 +152,111 @@ window.SITE = {
     en: ["unclear requirements", "customer needs", "complex systems", "new ideas"],
     de: ["unklaren Anforderungen", "Kundenbedürfnissen", "komplexen Systemen", "neuen Ideen"],
     zh: ["模糊的需求", "客户的诉求", "复杂的系统", "新的想法"]
+  },
+
+  /* ---------------- 404 页面：做成 Leitstelle（调度中心）的“警情界面” ----------------
+     访客打开不存在的地址时显示。会按网址（/de/…、/zh/…）或浏览器语言只显示一种语言。
+     status 用的是德国救援车辆的 FMS 状态码：3 = 接受任务，4 = 已到现场。                  */
+  notFound: {
+    tag:       { en: "Incident",  de: "Einsatz",  zh: "警情" },
+    keyword:   { en: "INFO 404 · Page missing", de: "INFO 404 · Seite vermisst", zh: "INFO 404 · 页面失踪" },
+    title:     { en: "On scene. Nothing found.", de: "Am Einsatzort. Nichts gefunden.", zh: "已到现场，未发现目标。" },
+    text: {
+      en: "We dispatched a unit to this address, but this page doesn't exist or has moved.",
+      de: "Wir haben ein Fahrzeug zu dieser Adresse alarmiert, aber diese Seite gibt es nicht oder sie wurde verschoben.",
+      zh: "我们已经派车前往这个地址，但这个页面不存在，或已经移动。"
+    },
+    location:  { en: "Location", de: "Einsatzort", zh: "事发地址" },
+    coords:    { en: "Not in the map data", de: "Nicht im Kartenmaterial", zh: "地图数据中查无此处" },
+    priority:  { en: "Priority", de: "Priorität", zh: "优先级" },
+    prioValue: { en: "Low · nobody hurt", de: "Niedrig · niemand verletzt", zh: "低 · 无人受伤" },
+    unit:      { en: "Unit status", de: "Fahrzeugstatus", zh: "车辆状态" },
+    unitValue: { en: "On scene", de: "Am Einsatzort", zh: "已到现场" },
+    logTitle:  { en: "Incident log", de: "Einsatzprotokoll", zh: "处置记录" },
+    /* 处置记录：[时间, 文字]，时间是从接警开始算的 分:秒 */
+    log: {
+      en: [["00:00", "Call received: page requested"], ["00:07", "Address checked: not in the map data"], ["00:42", "Unit dispatched · status 3"], ["04:04", "Status 4 · on scene: nothing here"]],
+      de: [["00:00", "Notruf eingegangen: Seite angefordert"], ["00:07", "Adresse geprüft: nicht im Kartenmaterial"], ["00:42", "Fahrzeug alarmiert · Status 3"], ["04:04", "Status 4 · am Einsatzort: nichts gefunden"]],
+      zh: [["00:00", "接到报警：请求页面"], ["00:07", "核对地址：地图数据中查无此处"], ["00:42", "已派车 · 状态 3"], ["04:04", "状态 4 · 已到现场：未发现目标"]]
+    },
+    back:      { en: "Return to station", de: "Zurück zur Wache", zh: "收队，返回首页" },
+    note:      { en: "Real emergency? Call 112.", de: "Echter Notfall? 112 anrufen.", zh: "真有紧急情况？请拨打 112。" }
+  },
+
+  /* ---------------- 彩蛋（藏起来的小惊喜） ----------------
+     • console：打开浏览器开发者工具（F12）时，控制台里的问候
+     • lightsOn / lightsOff：在键盘上按 ↑↑↓↓←→←→BA，开 / 关“车灯模式”
+       （手机：在页面上划 ↑↑↓↓←→←→ 再点两下；lightsOnTouch 是手机上的提示）
+     • clicks：连续快速点击头像或左上角 logo 5 次，随机显示其中一句
+     • touchHints：手机上点 5 次时也可能出现的手势提示
+     • e112：在页面上直接敲 1 1 2（欧洲急救电话）；手机：点、点、两指点                       */
+  eggs: {
+    console: {
+      en: "Hi, curious person 👋 Since you've opened DevTools anyway, you might as well get in touch.\nPsst: try ↑ ↑ ↓ ↓ ← → ← → B A, or the number keys 0–9.",
+      de: "Hallo, neugierige Person 👋 Wenn du schon die DevTools offen hast, kannst du dich auch gleich melden.\nPsst: probier mal ↑ ↑ ↓ ↓ ← → ← → B A – oder die Zifferntasten 0–9.",
+      zh: "你好，好奇的朋友 👋 既然你都打开开发者工具了，不如直接联系我吧。\n悄悄告诉你：试试 ↑ ↑ ↓ ↓ ← → ← → B A"
+    },
+    lightsOn:  { en: "💡 Headlights on. Press Esc to switch them off.", de: "💡 Scheinwerfer an. Mit Esc wieder aus.", zh: "💡 车灯已打开，按 Esc 关闭。" },
+    lightsOnTouch: { en: "💡 Headlights on. Tap with two fingers to switch them off.", de: "💡 Scheinwerfer an. Mit zwei Fingern tippen zum Ausschalten.", zh: "💡 车灯已打开，两指轻点关闭。" },
+    lightsOff: { en: "Headlights off.", de: "Scheinwerfer aus.", zh: "车灯已关闭。" },
+    clicks: {
+      en: ["You found an easter egg 🥚", "Servus from Munich! 🥨", "Fun fact: my career started in automotive lighting.", "I speak three languages, and JavaScript.", "Still clicking? Just send me an email 😄"],
+      de: ["Du hast ein Osterei gefunden 🥚", "Servus aus München! 🥨", "Fun Fact: Angefangen habe ich in der Fahrzeugbeleuchtung.", "Ich spreche drei Sprachen – und JavaScript.", "Immer noch am Klicken? Schreib mir lieber eine Mail 😄"],
+      zh: ["你发现了一个彩蛋 🥚", "来自慕尼黑的问候：Servus! 🥨", "冷知识：我的职业生涯是从汽车车灯开始的。", "我会三种语言，外加 JavaScript。", "还在点？不如直接给我发封邮件 😄"]
+    },
+    /* 只在手机 / 平板上出现：和 clicks 混在一起随机显示，提示手机上的手势 */
+    touchHints: {
+      en: ["Psst: swipe ↑ ↑ ↓ ↓ ← → ← →, then tap twice 💡", "Psst: tap, tap, then tap with two fingers 🚨", "Psst: press and hold my photo 📟"],
+      de: ["Psst: wische ↑ ↑ ↓ ↓ ← → ← →, dann zweimal tippen 💡", "Psst: tippen, tippen, dann mit zwei Fingern tippen 🚨", "Psst: halte mein Foto gedrückt 📟"],
+      zh: ["悄悄告诉你：在页面上划 ↑ ↑ ↓ ↓ ← → ← →，再点两下 💡", "悄悄告诉你：点一下、点一下，再两指轻点 🚨", "悄悄告诉你：长按我的照片 📟"]
+    },
+    /* 车辆状态（FMS，德国救援车辆的状态码 0–9）：
+       电脑上直接按数字键；也可以长按头像（手机）或按 S 键打开状态面板。按 5（Sprechwunsch）会跳到联系方式。
+       每一项是 [面板上的短名称, 弹出的话]                                                        */
+    fms: {
+      title:  { en: "Vehicle status (FMS)", de: "Fahrzeugstatus (FMS)", zh: "车辆状态（FMS）" },
+      prompt: { en: "Choose a status", de: "Status wählen", zh: "请选择状态" },
+      close:  { en: "Close", de: "Schließen", zh: "关闭" },
+      status: {
+        en: [["Priority call", "Status 0 · Priority call. In a real emergency, please dial 112."],
+             ["On radio", "Status 1 · Available on radio, and on LinkedIn."],
+             ["At station", "Status 2 · Available at station, near Munich."],
+             ["Job accepted", "Status 3 · Job accepted. On my way."],
+             ["On scene", "Status 4 · On scene: you're reading my website."],
+             ["Request to talk", "Status 5 · Request to talk. Patching you through to contact…"],
+             ["Out of service", "Status 6 · Out of service. Even dispatchers need coffee ☕"],
+             ["Patient on board", "Status 7 · Patient on board. Don't worry, it's only a bug 🐞"],
+             ["At destination", "Status 8 · At destination. Thanks for riding along!"],
+             ["Guest unit", "Status 9 · Guest unit signed on. Welcome, visitor!"]],
+        de: [["Prio-Sprechwunsch", "Status 0 · Priorisierter Sprechwunsch. Im echten Notfall bitte 112 wählen."],
+             ["Frei über Funk", "Status 1 · Einsatzbereit über Funk – und auf LinkedIn."],
+             ["Frei auf Wache", "Status 2 · Einsatzbereit auf Wache, bei München."],
+             ["Einsatz übernommen", "Status 3 · Einsatz übernommen. Bin unterwegs."],
+             ["Am Einsatzort", "Status 4 · Am Einsatzort: Du liest gerade meine Website."],
+             ["Sprechwunsch", "Status 5 · Sprechwunsch. Ich verbinde zum Kontakt …"],
+             ["Nicht einsatzbereit", "Status 6 · Nicht einsatzbereit. Auch Disponenten brauchen Kaffee ☕"],
+             ["Patient aufgenommen", "Status 7 · Patient aufgenommen. Keine Sorge, nur ein Bug 🐞"],
+             ["Am Transportziel", "Status 8 · Am Transportziel. Danke fürs Mitfahren!"],
+             ["Fremdanmeldung", "Status 9 · Fremdanmeldung. Willkommen, Besucher!"]],
+        zh: [["优先通话", "状态 0 · 优先通话请求。真有紧急情况，请拨打 112。"],
+             ["电台待命", "状态 1 · 电台待命，LinkedIn 上也在线。"],
+             ["在站待命", "状态 2 · 在站待命，就在慕尼黑附近。"],
+             ["接受任务", "状态 3 · 接受任务，正在路上。"],
+             ["已到现场", "状态 4 · 已到现场：你正在看我的网站。"],
+             ["请求通话", "状态 5 · 请求通话，正在为你转接联系方式……"],
+             ["暂停服务", "状态 6 · 暂停服务。调度员也需要咖啡 ☕"],
+             ["病人已上车", "状态 7 · 病人已上车。别担心，只是一个 bug 🐞"],
+             ["到达目的地", "状态 8 · 到达目的地。谢谢一路同行！"],
+             ["外来车辆", "状态 9 · 外来车辆登录。欢迎你，访客！"]]
+      }
+    },
+    /* 导航栏的进度条上有一辆小车，滚到页面最底部时显示 */
+    arrived: { en: "🚑 Status 4 · On scene. You made it to the end!", de: "🚑 Status 4 · Am Einsatzort. Du hast es bis ans Ende geschafft!", zh: "🚑 状态 4 · 已到现场。你看到最后啦！" },
+    e112: {
+      en: "🚨 Incident received… but this is just a website. In a real emergency, call 112.",
+      de: "🚨 Einsatz eingegangen … aber das hier ist nur eine Website. Im echten Notfall: 112 anrufen.",
+      zh: "🚨 收到警情……不过这里只是个网站。真有紧急情况，请拨打 112。"
+    }
   },
 
   /* ---------------- 数字卡片：n 是数字 ---------------- */

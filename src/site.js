@@ -36,7 +36,9 @@
   var bar = $('#progress'), nav = $('#nav');
   function onScroll() {
     var h = document.documentElement.scrollHeight - innerHeight;
-    if (bar) bar.style.transform = 'scaleX(' + (h > 0 ? Math.min(1, scrollY / h) : 0) + ')';
+    var pr = h > 0 ? Math.min(1, Math.max(0, scrollY / h)) : 0;
+    if (bar) bar.style.transform = 'scaleX(' + pr + ')';
+    if (nav) { nav.style.setProperty('--p', pr); nav.classList.toggle('rolling', pr > 0.005); }
     if (nav) nav.classList.toggle('compact', scrollY > 60);
   }
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
@@ -167,10 +169,10 @@
 
   /* ---------- 复制邮箱（没有 JS 时是普通的 mailto 链接） ---------- */
   var toast = $('#toast'), tt;
-  function showToast(msg) {
+  function showToast(msg, ms) {
     if (!toast) return;
     toast.textContent = msg; toast.classList.add('show');
-    clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove('show'); }, 2000);
+    clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove('show'); }, ms || 2000);
   }
   // 邮箱地址在 HTML 里是倒序存放的（防爬虫收集），这里拼回来，设置 mailto 和“点击复制”
   $$('[data-mail]').forEach(function (el) {
@@ -307,6 +309,242 @@
     addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onDockScroll); } }, { passive: true });
     dock.addEventListener('focusin', function () { setAway(false); });
   }
+
+  /* =====================================================
+     彩蛋（文字在 content.js 的 eggs，样式在 site.css 末尾）
+     ===================================================== */
+  var E = P.eggs || {};
+
+  // 1. 打开开发者工具时，控制台里的问候
+  if (E.console && window.console) {
+    try {
+      console.log('%cZhihao Yang', 'font: 700 28px/1.2 -apple-system, system-ui, sans-serif; color: #3D63F0;');
+      console.log('%c' + E.console, 'font: 14px/1.6 -apple-system, system-ui, sans-serif;');
+    } catch (err) {}
+  }
+
+  // 2. 车灯模式：整页变暗，只剩一束近光灯的光型（明暗截止线：左侧水平、右侧 15° 上扬），跟着鼠标 / 手指走
+  //    电脑：↑↑↓↓←→←→BA 打开，Esc 或再输一次关闭
+  //    手机：在页面上划 ↑↑↓↓←→←→，再点两下打开；两指轻点关闭
+  var touch = matchMedia('(pointer: coarse)').matches;   // 主要用手指操作的设备：提示文字换成手势说明
+  var lamp = null, aimX = innerWidth / 2, aimY = innerHeight * 0.45, aimQueued = false;
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  function placeBeam() {
+    aimQueued = false;
+    if (!lamp) return;
+    var k = Math.max(0.55, Math.min(1, innerWidth / 900));
+    var t = 'translate(' + aimX + ' ' + aimY + ') scale(' + k + ')';
+    lamp.querySelectorAll('.hl-move').forEach(function (g) { g.setAttribute('transform', t); });
+  }
+  function aim(x, y) {
+    aimX = x; aimY = y;
+    if (!aimQueued) { aimQueued = true; requestAnimationFrame(placeBeam); }
+  }
+  function lights(on) {
+    if (!lamp) {
+      // 坐标以光斑最亮处为原点；截止线拐点在它左上方 (-40, -40)
+      var cut = 'M-520 -40L-40 -40L190 -102L520 -102L520 320L-520 320Z';
+      var wrap = document.createElement('div');
+      wrap.innerHTML = '<svg class="headlights" xmlns="' + SVGNS + '" aria-hidden="true"><defs>' +
+        '<clipPath id="hlCut"><path d="' + cut + '"/></clipPath>' +
+        '<radialGradient id="hlHole" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="430" gradientTransform="scale(1 .5)">' +
+          '<stop offset="0" stop-color="#000"/><stop offset=".3" stop-color="#000"/><stop offset=".72" stop-color="#7a7a7a"/><stop offset="1" stop-color="#fff"/></radialGradient>' +
+        '<radialGradient id="hlWarm" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="380" gradientTransform="scale(1 .45)">' +
+          '<stop offset="0" stop-color="#fff3d6" stop-opacity=".26"/><stop offset=".5" stop-color="#ffe7b0" stop-opacity=".1"/><stop offset="1" stop-color="#ffe7b0" stop-opacity="0"/></radialGradient>' +
+        '<mask id="hlMask" maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">' +
+          '<rect width="100%" height="100%" fill="#fff"/>' +
+          '<g class="hl-move"><rect x="-520" y="-102" width="1040" height="422" fill="url(#hlHole)" clip-path="url(#hlCut)"/></g>' +
+        '</mask></defs>' +
+        '<rect class="hl-dark" width="100%" height="100%" mask="url(#hlMask)"/>' +
+        '<g class="hl-move"><rect x="-520" y="-102" width="1040" height="422" fill="url(#hlWarm)" clip-path="url(#hlCut)"/>' +
+          '<path class="hl-line" d="M-330 -40L-40 -40L150 -91"/></g>' +
+        '</svg>';
+      lamp = wrap.firstChild;
+      document.body.appendChild(lamp);
+      addEventListener('pointermove', function (e) { aim(e.clientX, e.clientY); }, { passive: true });
+      addEventListener('pointerdown', function (e) { aim(e.clientX, e.clientY); }, { passive: true });
+      addEventListener('touchmove', function (e) { var t = e.touches[0]; if (t) aim(t.clientX, t.clientY); }, { passive: true });
+      placeBeam();
+      lamp.getBoundingClientRect();       // 先渲染一次，渐显动画才会生效
+    }
+    lamp.classList.toggle('on', on);
+    root.classList.toggle('lights-on', on);
+    showToast(on ? (touch && E.lightsOnTouch ? E.lightsOnTouch : E.lightsOn) : E.lightsOff, on ? 3600 : 1600);
+  }
+
+  // 键盘和手势共用一个记录：方向（U D L R）、单指轻点（1）、两指轻点（2）、字母
+  var seq = [], lastAt = 0;
+  function record(tok) {
+    var now = Date.now();
+    if (now - lastAt > 3000) seq = [];
+    lastAt = now;
+    seq.push(tok); if (seq.length > 10) seq.shift();
+    var str = seq.join(' ');
+    var lit = root.classList.contains('lights-on');
+    if (E.lightsOn && (/U U D D L R L R b a$/.test(str) || /U U D D L R L R 1 1$/.test(str))) { seq = []; lights(!lit); return true; }
+    if (tok === '2' && lit) { seq = []; lights(false); return true; }
+    if (E.e112 && /(^| )1 1 2$/.test(str)) { seq = []; showToast(E.e112, 4500); return true; }
+    return false;
+  }
+
+  // 5. 112：电脑上直接敲 1 1 2；手机上单指点、单指点、两指点
+  var ARROWS = { ArrowUp: 'U', ArrowDown: 'D', ArrowLeft: 'L', ArrowRight: 'R' };
+  document.addEventListener('keydown', function (e) {
+    var t = e.target;
+    if (e.ctrlKey || e.metaKey || e.altKey || (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)))) return;
+    if (e.key === 'Escape' && panel && !panel.hidden) { closePanel(); return; }
+    if (e.key === 'Escape' && root.classList.contains('lights-on')) { lights(false); return; }
+    clearTimeout(pendingStatus);
+    var fired;
+    if (ARROWS[e.key]) fired = record(ARROWS[e.key]);
+    else if (e.key.length === 1) fired = record(e.key.toLowerCase());
+    if (fired || !E.fms) return;
+    if (/^[0-9]$/.test(e.key)) {
+      var d = +e.key;
+      if (panel && !panel.hidden) { pickStatus(d); return; }
+      // 1 和 2 可能是 112 的开头：稍等一下，确定后面没有接着输入再显示
+      pendingStatus = setTimeout(function () { pickStatus(d); }, d === 1 || d === 2 ? 700 : 0);
+    } else if (e.key === 's' || e.key === 'S') {
+      if (panel && !panel.hidden) closePanel(); else openPanel();
+    }
+  });
+
+  // 手势：一次触摸结束时判断是划动（方向）还是轻点（几根手指）
+  var g = null;
+  document.addEventListener('touchstart', function (e) {
+    var t = e.touches[0];
+    if (!g) g = { x: t.clientX, y: t.clientY, at: Date.now(), fingers: 0, moved: 0 };
+    g.fingers = Math.max(g.fingers, e.touches.length);
+  }, { passive: true });
+  document.addEventListener('touchmove', function (e) {
+    if (!g) return;
+    var t = e.touches[0];
+    g.moved = Math.max(g.moved, Math.abs(t.clientX - g.x) + Math.abs(t.clientY - g.y));
+    g.ex = t.clientX; g.ey = t.clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (!g || e.touches.length) return;
+    var d = g, dt = Date.now() - d.at; g = null;
+    if (d.fingers === 1 && d.ex != null) {
+      var dx = d.ex - d.x, dy = d.ey - d.y;
+      if (Math.max(Math.abs(dx), Math.abs(dy)) > 40 && dt < 800) {
+        record(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'R' : 'L') : (dy > 0 ? 'D' : 'U'));
+        return;
+      }
+    }
+    if (d.moved < 12 && dt < 350 && d.fingers <= 2) record(String(d.fingers));
+  }, { passive: true });
+  document.addEventListener('touchcancel', function () { g = null; }, { passive: true });
+
+  // 3. 快速连续点击头像或 logo 5 次：随机一句话（不和上一句重复；手机上还会出现手势提示）
+  var clicks = 0, clickTimer, lastLine = -1;
+  function tap() {
+    if (longFired) { longFired = false; return; }
+    clicks++;
+    clearTimeout(clickTimer); clickTimer = setTimeout(function () { clicks = 0; }, 900);
+    var lines = (E.clicks || []).concat(touch && E.touchHints ? E.touchHints : []);
+    if (clicks < 5 || !lines.length) return;
+    clicks = 0;
+    var i;
+    do { i = Math.floor(Math.random() * lines.length); } while (lines.length > 1 && i === lastLine);
+    lastLine = i;
+    showToast(lines[i], 3200);
+  }
+  [$('#portrait'), $('.brand-logo')].forEach(function (el) { if (el) el.addEventListener('click', tap); });
+
+
+  /* ---------- 调度中心彩蛋：FMS 车辆状态（数字键 0–9 / 状态面板） ---------- */
+  var F = E.fms || null, panel = null, pendingStatus, lastFocus = null;
+  function goContact() {
+    var c = $('#contact');
+    if (c) c.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    else if (P.home && P.lang) location.href = P.home[P.lang] + '#contact';
+  }
+  function pickStatus(d) {
+    if (!F || !F.status || !F.status[d]) return;
+    var msg = F.status[d][1];
+    if (panel && !panel.hidden) {
+      panel.querySelectorAll('.fms-key').forEach(function (b) { b.setAttribute('aria-pressed', +b.dataset.s === d); });
+      panel.querySelector('.fms-d').textContent = d;
+      panel.querySelector('.fms-t').textContent = msg;
+      if (d === 5) setTimeout(function () { closePanel(); goContact(); }, reduce ? 0 : 900);
+      return;
+    }
+    showToast(msg, 3400);
+    if (d === 5) setTimeout(goContact, reduce ? 0 : 500);
+  }
+  function buildPanel() {
+    panel = document.createElement('div');
+    panel.className = 'fms-panel glass'; panel.hidden = true;
+    panel.setAttribute('role', 'dialog'); panel.setAttribute('aria-label', F.title);
+    panel.innerHTML = '<div class="fms-head"><span class="fms-title"></span><button type="button" class="fms-x">×</button></div>' +
+      '<div class="fms-screen" role="status" aria-live="polite"><span class="fms-d">–</span><span class="fms-t"></span></div>' +
+      '<div class="fms-keys"></div>';
+    panel.querySelector('.fms-title').textContent = F.title;
+    panel.querySelector('.fms-t').textContent = F.prompt;
+    var x = panel.querySelector('.fms-x'); x.setAttribute('aria-label', F.close);
+    x.addEventListener('click', closePanel);
+    var keys = panel.querySelector('.fms-keys');
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 0].forEach(function (d) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'fms-key'; b.dataset.s = d; b.setAttribute('aria-pressed', 'false');
+      b.innerHTML = '<b></b><span></span>';
+      b.querySelector('b').textContent = d;
+      b.querySelector('span').textContent = F.status[d][0];
+      b.addEventListener('click', function () { pickStatus(d); });
+      keys.appendChild(b);
+    });
+    document.body.appendChild(panel);
+    document.addEventListener('pointerdown', function (e) {
+      if (!panel.hidden && !panel.contains(e.target) && !(portrait && portrait.contains(e.target))) closePanel();
+    });
+  }
+  function openPanel() {
+    if (!F || !F.status) return;
+    if (!panel) buildPanel();
+    lastFocus = document.activeElement;
+    panel.querySelector('.fms-d').textContent = '–';
+    panel.querySelector('.fms-t').textContent = F.prompt;
+    panel.querySelectorAll('.fms-key').forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+    panel.hidden = false;
+    panel.getBoundingClientRect();
+    panel.classList.add('show');
+    var first = panel.querySelector('.fms-key'); if (first && !touch) first.focus({ preventScroll: true });
+  }
+  function closePanel() {
+    if (!panel || panel.hidden) return;
+    panel.classList.remove('show');
+    setTimeout(function () { if (!panel.classList.contains('show')) panel.hidden = true; }, reduce ? 0 : 250);
+    if (lastFocus && lastFocus.focus && panel.contains(document.activeElement)) lastFocus.focus({ preventScroll: true });
+  }
+
+  // 长按头像（约 0.6 秒）打开状态面板；手机上不弹出“存储图像”菜单
+  var longFired = false, pressT = null, pressAt = null;
+  if (portrait && F) {
+    var pimg = portrait.querySelector('img'); if (pimg) pimg.setAttribute('draggable', 'false');
+    var cancelPress = function () { clearTimeout(pressT); pressT = null; };
+    portrait.addEventListener('pointerdown', function (e) {
+      if (e.button !== 0) return;
+      longFired = false; pressAt = { x: e.clientX, y: e.clientY };
+      cancelPress();
+      pressT = setTimeout(function () { pressT = null; longFired = true; openPanel(); }, 600);
+    });
+    portrait.addEventListener('pointermove', function (e) {
+      if (pressT && pressAt && Math.abs(e.clientX - pressAt.x) + Math.abs(e.clientY - pressAt.y) > 12) cancelPress();
+    });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (t) { portrait.addEventListener(t, cancelPress); });
+    portrait.addEventListener('contextmenu', function (e) { if (longFired || e.pointerType === 'touch' || touch) e.preventDefault(); });
+  }
+
+  // 进度条上的小车：开到页面最底部时提示“已到现场”（每次打开页面只提示一次）
+  var arrivedShown = false, unitEl = $('#unit'), rollT;
+  addEventListener('scroll', function () {
+    if (unitEl) { unitEl.classList.add('moving'); clearTimeout(rollT); rollT = setTimeout(function () { unitEl.classList.remove('moving'); }, 700); }
+    if (arrivedShown || !E.arrived) return;
+    var h = root.scrollHeight - innerHeight;
+    if (h > 400 && scrollY >= h - 4) { arrivedShown = true; showToast(E.arrived, 3200); }
+  }, { passive: true });
+
 
   // 用浏览器“返回”回到本页时（页面从缓存恢复），取消切换语言时的淡出效果
   addEventListener('pageshow', function (e) {

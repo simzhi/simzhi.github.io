@@ -126,6 +126,7 @@ ${links}
     </div>
   </div>
   <span class="progress" id="progress" aria-hidden="true"></span>
+  <span class="unit" id="unit" aria-hidden="true"><svg viewBox="0 0 20 12"><rect class="u-body" x=".5" y="3" width="19" height="8.5" rx="2.2"/><rect class="u-glass" x="13.5" y="4.6" width="4.6" height="3" rx=".8"/><rect class="u-stripe" x="1.5" y="8" width="11.5" height="1.4"/><rect class="u-bl b1" x="4" y=".3" width="3.2" height="2.3" rx=".7"/><rect class="u-bl b2" x="8.4" y=".3" width="3.2" height="2.3" rx=".7"/></svg></span>
 </nav>`;
 }
 
@@ -357,6 +358,9 @@ const pageData = (l, urlOf, extra = {}) => ({
   toast: plain(pick(S.ui['toast.copied'], l)),
   home: Object.fromEntries(LANGS.map((x) => [x, urlOf(x)])),
   hint: Object.fromEntries(LANGS.map((x) => [x, { text: uiPlain(x, 'langhint.text'), go: uiPlain(x, 'langhint.go'), close: uiPlain(x, 'langhint.close') }])),
+  eggs: Object.fromEntries(Object.entries(S.eggs || {}).map(([k, v]) => [k, k === 'fms'
+    ? Object.fromEntries(Object.entries(v).map(([k2, v2]) => [k2, pick(v2, l)]))
+    : pick(v, l)])),
   ...extra
 });
 const pageEnd = (l, urlOf, data) => `${langDock(l, urlOf)}
@@ -482,19 +486,64 @@ for (const p of legalPages) {
   }));
 }
 
-/* ---------- 404（三语） ---------- */
+/* ---------- 404（三语）：Leitstelle（调度中心）风格的警情界面 ----------
+   文字在 content.js 的 notFound。三种语言都写进页面，再由页面里的小脚本按网址或浏览器语言只显示一种
+   （没有 JS 时显示英语）。地图是自绘 SVG，动画在 site.css 末尾。 */
+const NF = S.notFound;
+const nf = (l, k) => html(pick(NF[k], l));
+const dispatchMap = `<svg class="d-map" viewBox="0 0 320 240" role="img" aria-label="Map: address unknown">
+        <rect width="320" height="240" rx="14" class="m-bg"/>
+        <path class="m-grid" d="M0 40H320M0 80H320M0 120H320M0 160H320M0 200H320M40 0V240M80 0V240M120 0V240M160 0V240M200 0V240M240 0V240M280 0V240"/>
+        <path class="m-water" d="M-10 182C40 168 70 196 120 186S200 150 240 164S300 196 330 182"/>
+        <g class="m-blocks"><rect x="18" y="18" width="54" height="40" rx="4"/><rect x="92" y="18" width="70" height="40" rx="4"/><rect x="182" y="18" width="40" height="40" rx="4"/><rect x="242" y="18" width="60" height="58" rx="4"/><rect x="18" y="78" width="54" height="66" rx="4"/><rect x="92" y="78" width="40" height="40" rx="4"/><rect x="152" y="78" width="70" height="30" rx="4"/><rect x="242" y="96" width="60" height="48" rx="4"/><rect x="152" y="126" width="70" height="20" rx="4"/></g>
+        <path class="m-road" d="M0 68H320M82 0V240M232 0V240M0 154C60 152 120 150 232 118"/>
+        <path class="m-road minor" d="M142 0V160M172 68V118M232 86H320"/>
+        <path class="m-route" d="M40 210C60 196 82 186 82 160V68H196"/>
+        <g class="m-station" transform="translate(40 210)"><circle r="11"/><path d="M-5 3V-2L0-6L5-2V3Z"/></g>
+        <g class="m-target" transform="translate(196 68)">
+          <circle class="ring r1" r="10"/><circle class="ring r2" r="10"/><circle class="dot" r="11"/>
+          <text y="4.5" text-anchor="middle">?</text>
+        </g>
+        <g class="m-unit" transform="translate(150 68)"><rect x="-13" y="-7" width="26" height="14" rx="4"/><circle class="bl b1" cx="-5" cy="-9" r="2.6"/><circle class="bl b2" cx="5" cy="-9" r="2.6"/></g>
+        <text class="m-coord" x="16" y="228">N --.------ · E --.------</text>
+      </svg>`;
 write('404.html', simplePage({
   l: 'en',
-  title: `404 · ${uiPlain('en', '404.title')}`,
-  description: uiPlain('en', '404.text'),
+  title: `404 · ${plain(pick(NF.keyword, 'en'))}`,
+  description: plain(pick(NF.text, 'en')),
   noindex: true,
-  body: `    <article class="glass">
-      <h1>404</h1>
-${LANGS.map((l) => `      <section lang="${HTML_LANG[l]}">
-        <h2>${ui(l, '404.title')}</h2>
-        <p>${ui(l, '404.text')}</p>
-        <p><a class="btn ghost" href="${home(l)}">${ui(l, '404.back')}</a></p>
-      </section>`).join('\n')}
+  body: `    <article class="glass dispatch">
+      <div class="d-bar"><span class="live" aria-hidden="true"></span><span>ELS · 112</span><span class="d-id">#2026-0404</span><span class="d-clock" id="dClock">--:--:--</span></div>
+      <div class="d-grid">
+        <div class="d-main">
+${LANGS.map((l) => `          <section class="nf" data-l="${l}" lang="${HTML_LANG[l]}"${l === 'en' ? '' : ' hidden'}>
+            <p class="d-kw"><span class="d-tag">${nf(l, 'tag')}</span>${nf(l, 'keyword')}</p>
+            <h1>${nf(l, 'title')}</h1>
+            <p class="d-text">${nf(l, 'text')}</p>
+            <dl class="d-facts">
+              <div><dt>${nf(l, 'location')}</dt><dd><code class="d-path">/404</code><small>${nf(l, 'coords')}</small></dd></div>
+              <div><dt>${nf(l, 'priority')}</dt><dd><span class="prio"></span>${nf(l, 'prioValue')}</dd></div>
+              <div><dt>${nf(l, 'unit')}</dt><dd><span class="fms">4</span>${nf(l, 'unitValue')}</dd></div>
+            </dl>
+            <h2 class="d-logt">${nf(l, 'logTitle')}</h2>
+            <ol class="d-log">
+${pick(NF.log, l).map(([t, x], i) => `              <li style="--i:${i}"><time>${esc(t)}</time><span>${html(x)}</span></li>`).join('\n')}
+            </ol>
+            <p class="d-actions"><a class="btn primary" href="${home(l)}">${nf(l, 'back')}</a><small>${nf(l, 'note')}</small></p>
+          </section>`).join('\n')}
+        </div>
+        ${dispatchMap}
+      </div>
+      <script>(function(){
+        var p=location.pathname,l=/^\\/de(\\/|$)/.test(p)?'de':/^\\/zh(\\/|$)/.test(p)?'zh':'';
+        if(!l){try{l=localStorage.getItem('lang')||''}catch(e){}}
+        if(!/^(en|de|zh)$/.test(l)){var n=(navigator.languages||[navigator.language||'']).map(function(x){return String(x).slice(0,2).toLowerCase()});l=n.filter(function(x){return /^(en|de|zh)$/.test(x)})[0]||'en'}
+        document.querySelectorAll('.nf').forEach(function(s){s.hidden=s.getAttribute('data-l')!==l});
+        document.documentElement.lang=l==='zh'?'zh-Hans':l;
+        var path=p;try{path=decodeURI(p)}catch(e){}if(path.length>42)path=path.slice(0,40)+'…';
+        document.querySelectorAll('.d-path').forEach(function(c){c.textContent=path});
+        var c=document.getElementById('dClock');function t(){c.textContent=new Date().toTimeString().slice(0,8)}t();setInterval(t,1000);
+      })();</script>
     </article>`
 }));
 
