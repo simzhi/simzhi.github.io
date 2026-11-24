@@ -483,55 +483,64 @@ for (const p of legalPages) {
   }));
 }
 
-/* 404 页面的车灯：现代 LED 大灯（掠角灯壳、镀铬饰圈、透镜式近光、远光模组、日行灯导光条、转向灯），
-   近光光束带明暗截止线（右侧 15° 上扬）。动画在 site.css 末尾。 */
-const headlamp = `<svg class="lamp" viewBox="0 0 380 140" aria-hidden="true">
-        <defs>
-          <linearGradient id="hlBeam" x1="70" y1="0" x2="380" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" class="b0"/><stop offset=".35" class="b1"/><stop offset=".85" class="b2"/></linearGradient>
-          <linearGradient id="hlShell" x1="0" y1="20" x2="0" y2="112" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4a505b"/><stop offset=".5" stop-color="#1c2027"/><stop offset="1" stop-color="#0b0d11"/></linearGradient>
-          <linearGradient id="hlChrome" x1="20" y1="20" x2="190" y2="110" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f4f6f8"/><stop offset=".35" stop-color="#8c939d"/><stop offset=".55" stop-color="#e3e6ea"/><stop offset="1" stop-color="#5d636c"/></linearGradient>
-          <radialGradient id="hlGlass" cx=".38" cy=".35" r=".75"><stop offset="0" stop-color="#5b6675"/><stop offset=".6" stop-color="#1a1f27"/><stop offset="1" stop-color="#07090c"/></radialGradient>
-          <radialGradient id="hlLit" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fffdf6"/><stop offset=".45" stop-color="#fff1cc"/><stop offset="1" stop-color="#ffe3a0" stop-opacity="0"/></radialGradient>
-          <radialGradient id="hlBloom" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff6dc" stop-opacity=".9"/><stop offset="1" stop-color="#ffe2a0" stop-opacity="0"/></radialGradient>
-          <filter id="hlSoft" x="-10%" y="-40%" width="120%" height="180%"><feGaussianBlur stdDeviation="2.2"/></filter>
-          <filter id="hlGlow" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="2.6" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <clipPath id="hlInner"><path d="M29 79C28 57 51 40 93 36L168 32C180 32 183 40 177 49C158 75 117 97 67 100C42 102 30 93 29 79Z"/></clipPath>
-        </defs>
-        <g class="beam"><path filter="url(#hlSoft)" d="M72 64L250 64L380 30L380 140L72 78Z"/></g>
-        <path class="shell" d="M18 79C16 51 44 30 92 26L172 22C191 21 197 35 187 49C167 79 121 105 66 109C36 111 20 99 18 79Z"/>
-        <path class="rim" d="M18 79C16 51 44 30 92 26L172 22C191 21 197 35 187 49C167 79 121 105 66 109C36 111 20 99 18 79Z"/>
-        <g clip-path="url(#hlInner)">
-          <rect x="20" y="20" width="180" height="90" fill="#090b0f"/>
-          <path d="M20 66C60 52 120 40 200 34L200 20L20 20Z" fill="#fff" opacity=".05"/>
-          <path class="amber" d="M98 41L166 37"/>
-          <circle cx="70" cy="71" r="22" fill="url(#hlChrome)"/>
-          <circle cx="70" cy="71" r="17.5" fill="#0d1015"/>
-          <circle cx="70" cy="71" r="15" fill="url(#hlGlass)"/>
-          <circle class="lit" cx="70" cy="71" r="15" fill="url(#hlLit)"/>
-          <ellipse cx="64" cy="64" rx="5" ry="3" fill="#fff" opacity=".55" transform="rotate(-30 64 64)"/>
-          <circle cx="122" cy="56" r="13" fill="url(#hlChrome)" opacity=".85"/>
-          <circle cx="122" cy="56" r="10" fill="url(#hlGlass)"/>
-          <circle cx="119" cy="52" r="2.4" fill="#fff" opacity=".45"/>
+/* ---------- 404（三语）：Leitstelle（调度中心）风格的警情界面 ----------
+   文字在 content.js 的 notFound。三种语言都写进页面，再由页面里的小脚本按网址或浏览器语言只显示一种
+   （没有 JS 时显示英语）。地图是自绘 SVG，动画在 site.css 末尾。 */
+const NF = S.notFound;
+const nf = (l, k) => html(pick(NF[k], l));
+const dispatchMap = `<svg class="d-map" viewBox="0 0 320 240" role="img" aria-label="Map: address unknown">
+        <rect width="320" height="240" rx="14" class="m-bg"/>
+        <path class="m-grid" d="M0 40H320M0 80H320M0 120H320M0 160H320M0 200H320M40 0V240M80 0V240M120 0V240M160 0V240M200 0V240M240 0V240M280 0V240"/>
+        <path class="m-water" d="M-10 182C40 168 70 196 120 186S200 150 240 164S300 196 330 182"/>
+        <g class="m-blocks"><rect x="18" y="18" width="54" height="40" rx="4"/><rect x="92" y="18" width="70" height="40" rx="4"/><rect x="182" y="18" width="40" height="40" rx="4"/><rect x="242" y="18" width="60" height="58" rx="4"/><rect x="18" y="78" width="54" height="66" rx="4"/><rect x="92" y="78" width="40" height="40" rx="4"/><rect x="152" y="78" width="70" height="30" rx="4"/><rect x="242" y="96" width="60" height="48" rx="4"/><rect x="152" y="126" width="70" height="20" rx="4"/></g>
+        <path class="m-road" d="M0 68H320M82 0V240M232 0V240M0 154C60 152 120 150 232 118"/>
+        <path class="m-road minor" d="M142 0V160M172 68V118M232 86H320"/>
+        <path class="m-route" d="M40 210C60 196 82 186 82 160V68H196"/>
+        <g class="m-station" transform="translate(40 210)"><circle r="11"/><path d="M-5 3V-2L0-6L5-2V3Z"/></g>
+        <g class="m-target" transform="translate(196 68)">
+          <circle class="ring r1" r="10"/><circle class="ring r2" r="10"/><circle class="dot" r="11"/>
+          <text y="4.5" text-anchor="middle">?</text>
         </g>
-        <path class="drl" filter="url(#hlGlow)" d="M40 96C86 96 138 78 172 47"/>
-        <path d="M30 60C44 42 70 33 100 31" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1.5" stroke-linecap="round"/>
-        <circle class="bloom" cx="70" cy="71" r="34" fill="url(#hlBloom)"/>
+        <g class="m-unit" transform="translate(150 68)"><rect x="-13" y="-7" width="26" height="14" rx="4"/><circle class="bl b1" cx="-5" cy="-9" r="2.6"/><circle class="bl b2" cx="5" cy="-9" r="2.6"/></g>
+        <text class="m-coord" x="16" y="228">N --.------ · E --.------</text>
       </svg>`;
-
-/* ---------- 404（三语） ---------- */
 write('404.html', simplePage({
   l: 'en',
-  title: `404 · ${uiPlain('en', '404.title')}`,
-  description: uiPlain('en', '404.text'),
+  title: `404 · ${plain(pick(NF.keyword, 'en'))}`,
+  description: plain(pick(NF.text, 'en')),
   noindex: true,
-  body: `    <article class="glass lost">
-${headlamp}
-      <h1>404</h1>
-${LANGS.map((l) => `      <section lang="${HTML_LANG[l]}">
-        <h2>${ui(l, '404.title')}</h2>
-        <p>${ui(l, '404.text')}</p>
-        <p><a class="btn ghost" href="${home(l)}">${ui(l, '404.back')}</a></p>
-      </section>`).join('\n')}
+  body: `    <article class="glass dispatch">
+      <div class="d-bar"><span class="live" aria-hidden="true"></span><span>ELS · 112</span><span class="d-id">#2026-0404</span><span class="d-clock" id="dClock">--:--:--</span></div>
+      <div class="d-grid">
+        <div class="d-main">
+${LANGS.map((l) => `          <section class="nf" data-l="${l}" lang="${HTML_LANG[l]}"${l === 'en' ? '' : ' hidden'}>
+            <p class="d-kw"><span class="d-tag">${nf(l, 'tag')}</span>${nf(l, 'keyword')}</p>
+            <h1>${nf(l, 'title')}</h1>
+            <p class="d-text">${nf(l, 'text')}</p>
+            <dl class="d-facts">
+              <div><dt>${nf(l, 'location')}</dt><dd><code class="d-path">/404</code><small>${nf(l, 'coords')}</small></dd></div>
+              <div><dt>${nf(l, 'priority')}</dt><dd><span class="prio"></span>${nf(l, 'prioValue')}</dd></div>
+              <div><dt>${nf(l, 'unit')}</dt><dd><span class="fms">4</span>${nf(l, 'unitValue')}</dd></div>
+            </dl>
+            <h2 class="d-logt">${nf(l, 'logTitle')}</h2>
+            <ol class="d-log">
+${pick(NF.log, l).map(([t, x], i) => `              <li style="--i:${i}"><time>${esc(t)}</time><span>${html(x)}</span></li>`).join('\n')}
+            </ol>
+            <p class="d-actions"><a class="btn primary" href="${home(l)}">${nf(l, 'back')}</a><small>${nf(l, 'note')}</small></p>
+          </section>`).join('\n')}
+        </div>
+        ${dispatchMap}
+      </div>
+      <script>(function(){
+        var p=location.pathname,l=/^\\/de(\\/|$)/.test(p)?'de':/^\\/zh(\\/|$)/.test(p)?'zh':'';
+        if(!l){try{l=localStorage.getItem('lang')||''}catch(e){}}
+        if(!/^(en|de|zh)$/.test(l)){var n=(navigator.languages||[navigator.language||'']).map(function(x){return String(x).slice(0,2).toLowerCase()});l=n.filter(function(x){return /^(en|de|zh)$/.test(x)})[0]||'en'}
+        document.querySelectorAll('.nf').forEach(function(s){s.hidden=s.getAttribute('data-l')!==l});
+        document.documentElement.lang=l==='zh'?'zh-Hans':l;
+        var path=p;try{path=decodeURI(p)}catch(e){}if(path.length>42)path=path.slice(0,40)+'…';
+        document.querySelectorAll('.d-path').forEach(function(c){c.textContent=path});
+        var c=document.getElementById('dClock');function t(){c.textContent=new Date().toTimeString().slice(0,8)}t();setInterval(t,1000);
+      })();</script>
     </article>`
 }));
 

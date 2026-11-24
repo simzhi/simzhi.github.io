@@ -139,10 +139,6 @@ window.SITE = {
     "legal.impressum":   { en: "Imprint",        de: "Impressum",            zh: "Impressum" },
     "legal.privacy":     { en: "Privacy",        de: "Datenschutz",          zh: "隐私声明" },
 
-    /* 404 页面 */
-    "404.title":         { en: "Nothing out here.", de: "Hier ist nichts.", zh: "前面没有路了。" },
-    "404.text":          { en: "You've driven past the last streetlight. This page doesn't exist or has moved.", de: "Hier endet die Straßenbeleuchtung. Diese Seite gibt es nicht oder sie wurde verschoben.", zh: "这段路连路灯都没有了。这个页面不存在，或已经移动。" },
-    "404.back":          { en: "Turn around, head home", de: "Wenden und zur Startseite", zh: "掉头，回到首页" },
 
     "footer": {
       en: "© 2026 Zhihao Yang · Designed with care in Munich",
@@ -156,6 +152,35 @@ window.SITE = {
     en: ["unclear requirements", "customer needs", "complex systems", "new ideas"],
     de: ["unklaren Anforderungen", "Kundenbedürfnissen", "komplexen Systemen", "neuen Ideen"],
     zh: ["模糊的需求", "客户的诉求", "复杂的系统", "新的想法"]
+  },
+
+  /* ---------------- 404 页面：做成 Leitstelle（调度中心）的“警情界面” ----------------
+     访客打开不存在的地址时显示。会按网址（/de/…、/zh/…）或浏览器语言只显示一种语言。
+     status 用的是德国救援车辆的 FMS 状态码：3 = 接受任务，4 = 已到现场。                  */
+  notFound: {
+    tag:       { en: "Incident",  de: "Einsatz",  zh: "警情" },
+    keyword:   { en: "INFO 404 · Page missing", de: "INFO 404 · Seite vermisst", zh: "INFO 404 · 页面失踪" },
+    title:     { en: "On scene. Nothing found.", de: "Am Einsatzort. Nichts gefunden.", zh: "已到现场，未发现目标。" },
+    text: {
+      en: "We dispatched a unit to this address, but this page doesn't exist or has moved.",
+      de: "Wir haben ein Fahrzeug zu dieser Adresse alarmiert, aber diese Seite gibt es nicht oder sie wurde verschoben.",
+      zh: "我们已经派车前往这个地址，但这个页面不存在，或已经移动。"
+    },
+    location:  { en: "Location", de: "Einsatzort", zh: "事发地址" },
+    coords:    { en: "Not in the map data", de: "Nicht im Kartenmaterial", zh: "地图数据中查无此处" },
+    priority:  { en: "Priority", de: "Priorität", zh: "优先级" },
+    prioValue: { en: "Low · nobody hurt", de: "Niedrig · niemand verletzt", zh: "低 · 无人受伤" },
+    unit:      { en: "Unit status", de: "Fahrzeugstatus", zh: "车辆状态" },
+    unitValue: { en: "On scene", de: "Am Einsatzort", zh: "已到现场" },
+    logTitle:  { en: "Incident log", de: "Einsatzprotokoll", zh: "处置记录" },
+    /* 处置记录：[时间, 文字]，时间是从接警开始算的 分:秒 */
+    log: {
+      en: [["00:00", "Call received: page requested"], ["00:07", "Address checked: not in the map data"], ["00:42", "Unit dispatched · status 3"], ["04:04", "Status 4 · on scene: nothing here"]],
+      de: [["00:00", "Notruf eingegangen: Seite angefordert"], ["00:07", "Adresse geprüft: nicht im Kartenmaterial"], ["00:42", "Fahrzeug alarmiert · Status 3"], ["04:04", "Status 4 · am Einsatzort: nichts gefunden"]],
+      zh: [["00:00", "接到报警：请求页面"], ["00:07", "核对地址：地图数据中查无此处"], ["00:42", "已派车 · 状态 3"], ["04:04", "状态 4 · 已到现场：未发现目标"]]
+    },
+    back:      { en: "Return to station", de: "Zurück zur Wache", zh: "收队，返回首页" },
+    note:      { en: "Real emergency? Call 112.", de: "Echter Notfall? 112 anrufen.", zh: "真有紧急情况？请拨打 112。" }
   },
 
   /* ---------------- 彩蛋（藏起来的小惊喜） ----------------
