@@ -573,3 +573,36 @@ html[lang^="zh"] .case h1 { letter-spacing: 0; }
   .fig { padding: 12px; }
   .prose-case p, .prose-case li, .side-body p, .side-body li { font-size: 17px; }
 }
+
+/* =====================================================
+   彩蛋（逻辑在 site.js 末尾，文字在 content.js 的 eggs）
+   ===================================================== */
+/* 车灯模式：↑↑↓↓←→←→BA。整页变暗，只有鼠标位置的一束暖光照亮内容 */
+.headlights {
+  position: fixed; inset: 0; z-index: 68; pointer-events: none; opacity: 0;
+  transition: opacity .6s var(--ease);
+  background:
+    radial-gradient(240px 150px at var(--hx, 50%) var(--hy, 45%), rgba(255, 238, 196, .16), transparent 70%),
+    radial-gradient(300px 190px at var(--hx, 50%) var(--hy, 45%), transparent 0, transparent 50%, rgba(3, 4, 8, .94) 100%);
+}
+.headlights.on { opacity: 1; }
+html.lights-on { cursor: crosshair; }
+
+/* 404：一盏车灯，灯光照着“404” */
+.lost { --beam: #ffd98a; }
+.lost .lamp { display: block; width: min(260px, 70%); height: auto; margin: 0 0 4px -6px; overflow: visible; }
+.lost .lamp stop:first-child { stop-color: var(--beam); stop-opacity: .55; }
+.lost .lamp stop:last-child  { stop-color: var(--beam); stop-opacity: 0; }
+.lost .beam { fill: url(#beamFade); fill-opacity: .5; transform-origin: 58px 40px; animation: lamp-on 1.6s steps(1, end) .3s both, beam-sway 6s ease-in-out 2s infinite; }
+.lost .beam-core { fill: url(#beamFade); transform-origin: 58px 40px; animation: lamp-on 1.6s steps(1, end) .3s both, beam-sway 6s ease-in-out 2s infinite; }
+.lost .housing { fill: color-mix(in srgb, var(--text) 82%, transparent); }
+.lost .bulb { fill: var(--beam); animation: lamp-on 1.6s steps(1, end) .3s both; }
+.lost h1 {
+  display: inline-block; font-size: clamp(64px, 12vw, 104px); line-height: 1;
+  background: linear-gradient(90deg, var(--beam), var(--accent) 55%, var(--accent-2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+[data-theme="light"] .lost { --beam: #e8940c; }
+/* 灯“打不着”闪两下再亮起来 */
+@keyframes lamp-on { 0% { opacity: 0; } 12% { opacity: 1; } 20% { opacity: .1; } 32% { opacity: 1; } 40% { opacity: .2; } 55%, 100% { opacity: 1; } }
+@keyframes beam-sway { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-4deg); } }

@@ -167,10 +167,10 @@
 
   /* ---------- 复制邮箱（没有 JS 时是普通的 mailto 链接） ---------- */
   var toast = $('#toast'), tt;
-  function showToast(msg) {
+  function showToast(msg, ms) {
     if (!toast) return;
     toast.textContent = msg; toast.classList.add('show');
-    clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove('show'); }, 2000);
+    clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove('show'); }, ms || 2000);
   }
   // 邮箱地址在 HTML 里是倒序存放的（防爬虫收集），这里拼回来，设置 mailto 和“点击复制”
   $$('[data-mail]').forEach(function (el) {
@@ -307,6 +307,73 @@
     addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onDockScroll); } }, { passive: true });
     dock.addEventListener('focusin', function () { setAway(false); });
   }
+
+  /* =====================================================
+     彩蛋（文字在 content.js 的 eggs，样式在 site.css 末尾）
+     ===================================================== */
+  var E = P.eggs || {};
+
+  // 1. 打开开发者工具时，控制台里的问候
+  if (E.console && window.console) {
+    try {
+      console.log('%cZhihao Yang', 'font: 700 28px/1.2 -apple-system, system-ui, sans-serif; color: #3D63F0;');
+      console.log('%c' + E.console, 'font: 14px/1.6 -apple-system, system-ui, sans-serif;');
+    } catch (err) {}
+  }
+
+  // 2. 车灯模式：↑↑↓↓←→←→BA 打开 / 关闭，Esc 关闭
+  var lamp = null;
+  function lights(on) {
+    if (!lamp) {
+      lamp = document.createElement('div');
+      lamp.className = 'headlights'; lamp.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(lamp);
+      var aim = function (e) {
+        lamp.style.setProperty('--hx', e.clientX + 'px');
+        lamp.style.setProperty('--hy', e.clientY + 'px');
+      };
+      addEventListener('pointermove', aim, { passive: true });
+      addEventListener('pointerdown', aim, { passive: true });
+      lamp.getBoundingClientRect();       // 先渲染一次，渐显动画才会生效
+    }
+    lamp.classList.toggle('on', on);
+    root.classList.toggle('lights-on', on);
+    showToast(on ? E.lightsOn : E.lightsOff, on ? 3200 : 1600);
+  }
+
+  // 5. 直接在页面上敲 1 1 2
+  var KONAMI = 'ArrowUp ArrowUp ArrowDown ArrowDown ArrowLeft ArrowRight ArrowLeft ArrowRight b a', keys = [];
+  document.addEventListener('keydown', function (e) {
+    var t = e.target;
+    if (e.ctrlKey || e.metaKey || e.altKey || (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)))) return;
+    if (e.key === 'Escape' && root.classList.contains('lights-on')) { lights(false); return; }
+    keys.push(e.key.length === 1 ? e.key.toLowerCase() : e.key);
+    if (keys.length > 10) keys.shift();
+    if (E.lightsOn && keys.join(' ') === KONAMI) { keys = []; lights(!root.classList.contains('lights-on')); return; }
+    if (E.e112 && keys.slice(-3).join('') === '112') { keys = []; showToast(E.e112, 4500); }
+  });
+
+  // 3. 快速连续点击头像或 logo 5 次：随机一句话（不和上一句重复）
+  var clicks = 0, clickTimer, lastLine = -1;
+  function tap() {
+    clicks++;
+    clearTimeout(clickTimer); clickTimer = setTimeout(function () { clicks = 0; }, 900);
+    if (clicks < 5 || !E.clicks || !E.clicks.length) return;
+    clicks = 0;
+    var i;
+    do { i = Math.floor(Math.random() * E.clicks.length); } while (E.clicks.length > 1 && i === lastLine);
+    lastLine = i;
+    showToast(E.clicks[i], 2800);
+  }
+  [$('#portrait'), $('.brand-logo')].forEach(function (el) { if (el) el.addEventListener('click', tap); });
+
+  // 4. 8 秒内来回切换主题 8 次
+  var flips = [];
+  if (themeBtn && E.theme) themeBtn.addEventListener('click', function () {
+    var now = Date.now();
+    flips = flips.filter(function (x) { return now - x < 8000; }); flips.push(now);
+    if (flips.length >= 8) { flips = []; showToast(E.theme, 3000); }
+  });
 
   // 用浏览器“返回”回到本页时（页面从缓存恢复），取消切换语言时的淡出效果
   addEventListener('pageshow', function (e) {

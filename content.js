@@ -140,9 +140,9 @@ window.SITE = {
     "legal.privacy":     { en: "Privacy",        de: "Datenschutz",          zh: "隐私声明" },
 
     /* 404 页面 */
-    "404.title":         { en: "Page not found", de: "Seite nicht gefunden", zh: "页面不存在" },
-    "404.text":          { en: "This page doesn't exist or has moved.", de: "Diese Seite gibt es nicht oder sie wurde verschoben.", zh: "这个页面不存在，或已经移动。" },
-    "404.back":          { en: "Back to home",   de: "Zur Startseite",       zh: "返回首页" },
+    "404.title":         { en: "Nothing out here.", de: "Hier ist nichts.", zh: "前面没有路了。" },
+    "404.text":          { en: "You've driven past the last streetlight. This page doesn't exist or has moved.", de: "Hier endet die Straßenbeleuchtung. Diese Seite gibt es nicht oder sie wurde verschoben.", zh: "这段路连路灯都没有了。这个页面不存在，或已经移动。" },
+    "404.back":          { en: "Turn around, head home", de: "Wenden und zur Startseite", zh: "掉头，回到首页" },
 
     "footer": {
       en: "© 2026 Zhihao Yang · Designed with care in Munich",
@@ -156,6 +156,33 @@ window.SITE = {
     en: ["unclear requirements", "customer needs", "complex systems", "new ideas"],
     de: ["unklaren Anforderungen", "Kundenbedürfnissen", "komplexen Systemen", "neuen Ideen"],
     zh: ["模糊的需求", "客户的诉求", "复杂的系统", "新的想法"]
+  },
+
+  /* ---------------- 彩蛋（藏起来的小惊喜） ----------------
+     • console：打开浏览器开发者工具（F12）时，控制台里的问候
+     • lightsOn / lightsOff：在键盘上按 ↑↑↓↓←→←→BA，开 / 关“车灯模式”
+     • clicks：连续快速点击头像或左上角 logo 5 次，随机显示其中一句
+     • theme：短时间内连续切换明暗主题很多次
+     • e112：在页面上直接敲 1 1 2（欧洲急救电话）                       */
+  eggs: {
+    console: {
+      en: "Hi, curious person 👋 Since you've opened DevTools anyway, you might as well get in touch.\nPsst: try ↑ ↑ ↓ ↓ ← → ← → B A",
+      de: "Hallo, neugierige Person 👋 Wenn du schon die DevTools offen hast, kannst du dich auch gleich melden.\nPsst: probier mal ↑ ↑ ↓ ↓ ← → ← → B A",
+      zh: "你好，好奇的朋友 👋 既然你都打开开发者工具了，不如直接联系我吧。\n悄悄告诉你：试试 ↑ ↑ ↓ ↓ ← → ← → B A"
+    },
+    lightsOn:  { en: "💡 Headlights on. Press Esc to switch them off.", de: "💡 Scheinwerfer an. Mit Esc wieder aus.", zh: "💡 车灯已打开，按 Esc 关闭。" },
+    lightsOff: { en: "Headlights off.", de: "Scheinwerfer aus.", zh: "车灯已关闭。" },
+    clicks: {
+      en: ["You found an easter egg 🥚", "Servus from Munich! 🥨", "Fun fact: my career started in automotive lighting.", "I speak three languages, and JavaScript.", "Still clicking? Just send me an email 😄"],
+      de: ["Du hast ein Osterei gefunden 🥚", "Servus aus München! 🥨", "Fun Fact: Angefangen habe ich in der Fahrzeugbeleuchtung.", "Ich spreche drei Sprachen – und JavaScript.", "Immer noch am Klicken? Schreib mir lieber eine Mail 😄"],
+      zh: ["你发现了一个彩蛋 🥚", "来自慕尼黑的问候：Servus! 🥨", "冷知识：我的职业生涯是从汽车车灯开始的。", "我会三种语言，外加 JavaScript。", "还在点？不如直接给我发封邮件 😄"]
+    },
+    theme: { en: "Light, dark, light, dark… are your eyes OK? 😎", de: "Hell, dunkel, hell, dunkel … alles gut mit den Augen? 😎", zh: "亮、暗、亮、暗……眼睛还好吗？😎" },
+    e112: {
+      en: "🚨 Incident received… but this is just a website. In a real emergency, call 112.",
+      de: "🚨 Einsatz eingegangen … aber das hier ist nur eine Website. Im echten Notfall: 112 anrufen.",
+      zh: "🚨 收到警情……不过这里只是个网站。真有紧急情况，请拨打 112。"
+    }
   },
 
   /* ---------------- 数字卡片：n 是数字 ---------------- */

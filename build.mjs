@@ -357,6 +357,7 @@ const pageData = (l, urlOf, extra = {}) => ({
   toast: plain(pick(S.ui['toast.copied'], l)),
   home: Object.fromEntries(LANGS.map((x) => [x, urlOf(x)])),
   hint: Object.fromEntries(LANGS.map((x) => [x, { text: uiPlain(x, 'langhint.text'), go: uiPlain(x, 'langhint.go'), close: uiPlain(x, 'langhint.close') }])),
+  eggs: Object.fromEntries(Object.entries(S.eggs || {}).map(([k, v]) => [k, pick(v, l)])),
   ...extra
 });
 const pageEnd = (l, urlOf, data) => `${langDock(l, urlOf)}
@@ -488,7 +489,14 @@ write('404.html', simplePage({
   title: `404 · ${uiPlain('en', '404.title')}`,
   description: uiPlain('en', '404.text'),
   noindex: true,
-  body: `    <article class="glass">
+  body: `    <article class="glass lost">
+      <svg class="lamp" viewBox="0 0 220 80" aria-hidden="true">
+        <defs><linearGradient id="beamFade" x1="0" x2="1" y1="0" y2="0"><stop offset="0"/><stop offset="1"/></linearGradient></defs>
+        <path class="beam" d="M58 26 L220 2 L220 78 L58 54 Z"/>
+        <path class="beam-core" d="M58 32 L220 24 L220 56 L58 48 Z"/>
+        <path class="housing" d="M14 16 h30 a16 16 0 0 1 16 16 v16 a16 16 0 0 1 -16 16 h-30 a8 8 0 0 1 -8 -8 v-32 a8 8 0 0 1 8 -8 z"/>
+        <circle class="bulb" cx="40" cy="40" r="9"/>
+      </svg>
       <h1>404</h1>
 ${LANGS.map((l) => `      <section lang="${HTML_LANG[l]}">
         <h2>${ui(l, '404.title')}</h2>
