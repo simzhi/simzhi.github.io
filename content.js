@@ -189,7 +189,6 @@ window.SITE = {
        （手机：在页面上划 ↑↑↓↓←→←→ 再点两下；lightsOnTouch 是手机上的提示）
      • clicks：连续快速点击头像或左上角 logo 5 次，随机显示其中一句
      • touchHints：手机上点 5 次时也可能出现的手势提示
-     • theme：短时间内连续切换明暗主题很多次
      • e112：在页面上直接敲 1 1 2（欧洲急救电话）；手机：点、点、两指点                       */
   eggs: {
     console: {
@@ -253,10 +252,6 @@ window.SITE = {
     },
     /* 导航栏的进度条上有一辆小车，滚到页面最底部时显示 */
     arrived: { en: "🚑 Status 4 · On scene. You made it to the end!", de: "🚑 Status 4 · Am Einsatzort. Du hast es bis ans Ende geschafft!", zh: "🚑 状态 4 · 已到现场。你看到最后啦！" },
-    /* 切到别的标签页时，标签页标题变成 tabAway；切回来时短暂显示 tabBack */
-    tabAway: { en: "🚨 Incident waiting…", de: "🚨 Einsatz wartet …", zh: "🚨 警情待处理……" },
-    tabBack: { en: "Status 2 · Welcome back", de: "Status 2 · Willkommen zurück", zh: "状态 2 · 欢迎回来" },
-    theme: { en: "Light, dark, light, dark… are your eyes OK? 😎", de: "Hell, dunkel, hell, dunkel … alles gut mit den Augen? 😎", zh: "亮、暗、亮、暗……眼睛还好吗？😎" },
     e112: {
       en: "🚨 Incident received… but this is just a website. In a real emergency, call 112.",
       de: "🚨 Einsatz eingegangen … aber das hier ist nur eine Website. Im echten Notfall: 112 anrufen.",

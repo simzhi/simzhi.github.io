@@ -452,13 +452,6 @@
   }
   [$('#portrait'), $('.brand-logo')].forEach(function (el) { if (el) el.addEventListener('click', tap); });
 
-  // 4. 8 秒内来回切换主题 8 次
-  var flips = [];
-  if (themeBtn && E.theme) themeBtn.addEventListener('click', function () {
-    var now = Date.now();
-    flips = flips.filter(function (x) { return now - x < 8000; }); flips.push(now);
-    if (flips.length >= 8) { flips = []; showToast(E.theme, 3000); }
-  });
 
   /* ---------- 调度中心彩蛋：FMS 车辆状态（数字键 0–9 / 状态面板） ---------- */
   var F = E.fms || null, panel = null, pendingStatus, lastFocus = null;
@@ -552,16 +545,6 @@
     if (h > 400 && scrollY >= h - 4) { arrivedShown = true; showToast(E.arrived, 3200); }
   }, { passive: true });
 
-  // 切到别的标签页时改标题；切回来时短暂显示“欢迎回来”
-  if (E.tabAway) {
-    var realTitle = document.title, backT;
-    document.addEventListener('visibilitychange', function () {
-      clearTimeout(backT);
-      if (document.hidden) { document.title = E.tabAway; return; }
-      document.title = E.tabBack || realTitle;
-      backT = setTimeout(function () { document.title = realTitle; }, 2500);
-    });
-  }
 
   // 用浏览器“返回”回到本页时（页面从缓存恢复），取消切换语言时的淡出效果
   addEventListener('pageshow', function (e) {
